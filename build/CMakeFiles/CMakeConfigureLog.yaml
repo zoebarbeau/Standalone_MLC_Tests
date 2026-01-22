@@ -1,0 +1,633 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Linux - 5.15.0-164-generic - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is NVHPC, found in:
+        /home/zbarbeau/GPU/standalone/build/CMakeFiles/3.26.3/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_0a146/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_0a146.dir/build.make CMakeFiles/cmTC_0a146.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL'
+        Building CXX object CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++   -v -MD -MT CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -c /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp
+        Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5
+        Export PGI=/opt/nvidia/hpc_sdk
+        Create file CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d
+        
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/nvcpfe -- --llalign -D__GNUC__=11 -D__GNUC_MINOR__=4 -D__GNUC_PATCHLEVEL__=0 -D__unix -D__unix__ -Dunix -Dlinux -D__linux -D__linux__ -D__NO_MATH_INLINES -D__LP64__ -D__x86_64 -D__x86_64__ -D__LONG_MAX__=9223372036854775807L '-D__SIZE_TYPE__=unsigned long int' '-D__PTRDIFF_TYPE__=long int' -D__amd64 -D__amd64__ -D__k8 -D__k8__ -D__MMX__ -D__SSE_MATH__ -D__MMX_WITH_SSE__ -D__SSE__ -D__SSE2__ -D__SSE2_MATH__ -D__SSE3__ -D__SSSE3__ -D__SSE4A__ -D__SSE4_1__ -D__SSE4_2__ -D__ABM__ -D__ADX__ -D__AES__ -D__AVX__ -D__AVX2__ -D__BMI__ -D__BMI2__ -D__CLFLUSHOPT__ -D__CLWB__ -D__CLZERO__ -D__CX16__ -D__F16C__ -D__FMA__ -D__FSGSBASE__ -D__FXSR__ -D__LZCNT__ -D__MOVBE__ -D__MWAITX__ -D__PCLMUL__ -D__PKU__ -D__POPCNT__ -D__PRFCHW__ -D__RDPID__ -D__RDRND__ -D__RDSEED__ -D__LAHF_SAHF__ -D__SHA__ -D__SHSTK__ -D__VAES__ -D__VPCLMULQDQ__ -D__WBNOINVD__ -D__XSAVE__ -D__XSAVEC__ -D__XSAVEOPT__ -D__XSAVES__ -D__PGI -D__NVCOMPILER -D_GNU_SOURCE -D_PGCG_SOURCE -I- -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/extras/qd/include/qd -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nvshmem/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nccl/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/math_libs/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include-stdexec --sys_include /usr/include/c++/11 --sys_include /usr/include/x86_64-linux-gnu/c++/11 --sys_include /usr/include/c++/11/backward --sys_include /usr/lib/gcc/x86_64-linux-gnu/11/include --sys_include /usr/local/include --sys_include /usr/include/x86_64-linux-gnu --sys_include /usr/include -D__PGLLVM__ -D__NVCOMPILER_LLVM__ -D__extension__= --preinclude _cplus_preinclude.h --preinclude_macros _cplus_macros.h --gnu_version=110400 -D__pgnu_vsn=110400 --no_fixed_bp --dependencies_target_to_stdout CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o --dependencies_to_file CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -q -o /tmp/nvc++kqJucEZ6u40fr.il /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -- /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -opt 1 -x 119 0xa10000 -x 122 0x40 -x 123 0x1000 -x 127 4 -x 127 17 -x 19 0x400000 -x 28 0x40000 -x 120 0x10000000 -x 70 0x8000 -x 122 1 -x 125 0x20000 -quad -x 59 4 -tp znver3 -x 120 0x1000 -astype 0 -x 121 1 -fn /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -il /tmp/nvc++kqJucEZ6u40fr.il -x 117 0x200 -x 123 0x80000000 -x 123 4 -x 2 0x400 -x 209 0x10 -x 119 0x20 -def __pgnu_vsn=110400 -x 70 0x40000000 -x 183 4 -x 121 0x800 -x 6 0x20000 -x 249 170 -x 120 0x200000 -x 70 0x40000000 -x 8 0x40000000 -x 164 0x800000 -x 71 0x2000 -x 71 0x4000 -x 34 0x40000000 -x 120 0x1000000 -x 73 0x04 -x 231 0x800 -x 68 0x1 -x 39 4 -x 56 0x10 -x 26 0x10 -x 26 1 -x 56 0x4000 -x 197 0 -x 175 0 -x 203 0 -x 204 0 -x 227 0xFFFF -y 163 0xc0000000 -x 189 0x10 -y 189 0x4000000 -x 60 512 -gnuvsn 110400 -x 69 0x200 -x 123 0x400 -cmdline '+nvc++ /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -v -MD -MT CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -c' -asm /tmp/nvc++QqJuc_iBiW0Kp.ll
+        NVC++/x86-64 Linux 24.5-1: compilation successful
+        
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/share/llvm/bin/llc /tmp/nvc++QqJuc_iBiW0Kp.ll -march=x86-64 -mcpu=native -mattr=+mmx -mattr=+sse -mattr=+sse2 -mattr=+sse3 -mattr=+ssse3 -mattr=+sse4a -mattr=+sse4.1 -mattr=+sse4.2 -mattr=+avx -mattr=+avx2 -mattr=+f16c -mattr=+fma -mattr=+xsave -mattr=+xsaveopt -mattr=+xsavec -mattr=+xsaves -mattr=+popcnt -mattr=+sha -mattr=+aes -mattr=+pclmul -mattr=+clflushopt -mattr=+fsgsbase -mattr=+rdrnd -mattr=+bmi -mattr=+bmi2 -mattr=+lzcnt -mattr=+fxsr -mattr=+mwaitx -mattr=+clzero -mattr=+pku -mattr=+vaes -mattr=+vpclmulqdq -mattr=+adx -mattr=+clwb -mattr=+cx16 -mattr=+movbe -mattr=+prfchw -mattr=+rdpid -mattr=+rdseed -mattr=+sahf -mattr=+shstk -mattr=+wbnoinvd -O1 -x86-cmov-converter=0 -dwarf-directory=false -non-global-value-max-name-size=4294967295 --align-all-functions=6 -nvhpc-memzero -filetype=obj --frame-pointer=none -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o
+        Unlinking /tmp/nvc++kqJucEZ6u40fr.il
+        Unlinking /tmp/nvc++AqJucoprj4dgO.s
+        Unlinking /tmp/nvc++QqJuc_iBiW0Kp.ll
+        Unlinking /tmp/nvc++6qJucUq0OfUPI.llvm
+        Linking CXX executable cmTC_0a146
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a146.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -v CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_0a146 
+        Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5
+        Export PGI=/opt/nvidia/hpc_sdk
+        
+        /usr/bin/ld /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -T /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib/nvhpc.ld -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -L/usr/lib64 -L/usr/lib/gcc/x86_64-linux-gnu/11/ CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -rpath /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -o cmTC_0a146 -L/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64 -latomic -lnvhpcatm -lstdc++ -lnvomp -ldl --as-needed -lnvhpcatm -latomic --no-as-needed -lpthread -lnvcpumath -lnsnvc -lnvc -lgcc -lc -lgcc_s -lm /usr/lib/gcc/x86_64-linux-gnu/11//crtend.o /usr/lib/x86_64-linux-gnu/crtn.o
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=start
+        warn: unable to parse implicit include dirs!
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL]
+        ignore line: []
+        ignore line: [Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_0a146/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_0a146.dir/build.make CMakeFiles/cmTC_0a146.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-TZmgoL']
+        ignore line: [Building CXX object CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++   -v -MD -MT CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -c /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5]
+        ignore line: [Export PGI=/opt/nvidia/hpc_sdk]
+        ignore line: [Create file CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d]
+        ignore line: []
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/nvcpfe -- --llalign -D__GNUC__=11 -D__GNUC_MINOR__=4 -D__GNUC_PATCHLEVEL__=0 -D__unix -D__unix__ -Dunix -Dlinux -D__linux -D__linux__ -D__NO_MATH_INLINES -D__LP64__ -D__x86_64 -D__x86_64__ -D__LONG_MAX__=9223372036854775807L '-D__SIZE_TYPE__=unsigned long int' '-D__PTRDIFF_TYPE__=long int' -D__amd64 -D__amd64__ -D__k8 -D__k8__ -D__MMX__ -D__SSE_MATH__ -D__MMX_WITH_SSE__ -D__SSE__ -D__SSE2__ -D__SSE2_MATH__ -D__SSE3__ -D__SSSE3__ -D__SSE4A__ -D__SSE4_1__ -D__SSE4_2__ -D__ABM__ -D__ADX__ -D__AES__ -D__AVX__ -D__AVX2__ -D__BMI__ -D__BMI2__ -D__CLFLUSHOPT__ -D__CLWB__ -D__CLZERO__ -D__CX16__ -D__F16C__ -D__FMA__ -D__FSGSBASE__ -D__FXSR__ -D__LZCNT__ -D__MOVBE__ -D__MWAITX__ -D__PCLMUL__ -D__PKU__ -D__POPCNT__ -D__PRFCHW__ -D__RDPID__ -D__RDRND__ -D__RDSEED__ -D__LAHF_SAHF__ -D__SHA__ -D__SHSTK__ -D__VAES__ -D__VPCLMULQDQ__ -D__WBNOINVD__ -D__XSAVE__ -D__XSAVEC__ -D__XSAVEOPT__ -D__XSAVES__ -D__PGI -D__NVCOMPILER -D_GNU_SOURCE -D_PGCG_SOURCE -I- -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/extras/qd/include/qd -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nvshmem/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nccl/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/math_libs/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include-stdexec --sys_include /usr/include/c++/11 --sys_include /usr/include/x86_64-linux-gnu/c++/11 --sys_include /usr/include/c++/11/backward --sys_include /usr/lib/gcc/x86_64-linux-gnu/11/include --sys_include /usr/local/include --sys_include /usr/include/x86_64-linux-gnu --sys_include /usr/include -D__PGLLVM__ -D__NVCOMPILER_LLVM__ -D__extension__= --preinclude _cplus_preinclude.h --preinclude_macros _cplus_macros.h --gnu_version=110400 -D__pgnu_vsn=110400 --no_fixed_bp --dependencies_target_to_stdout CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o --dependencies_to_file CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -q -o /tmp/nvc++kqJucEZ6u40fr.il /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -- /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -opt 1 -x 119 0xa10000 -x 122 0x40 -x 123 0x1000 -x 127 4 -x 127 17 -x 19 0x400000 -x 28 0x40000 -x 120 0x10000000 -x 70 0x8000 -x 122 1 -x 125 0x20000 -quad -x 59 4 -tp znver3 -x 120 0x1000 -astype 0 -x 121 1 -fn /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -il /tmp/nvc++kqJucEZ6u40fr.il -x 117 0x200 -x 123 0x80000000 -x 123 4 -x 2 0x400 -x 209 0x10 -x 119 0x20 -def __pgnu_vsn=110400 -x 70 0x40000000 -x 183 4 -x 121 0x800 -x 6 0x20000 -x 249 170 -x 120 0x200000 -x 70 0x40000000 -x 8 0x40000000 -x 164 0x800000 -x 71 0x2000 -x 71 0x4000 -x 34 0x40000000 -x 120 0x1000000 -x 73 0x04 -x 231 0x800 -x 68 0x1 -x 39 4 -x 56 0x10 -x 26 0x10 -x 26 1 -x 56 0x4000 -x 197 0 -x 175 0 -x 203 0 -x 204 0 -x 227 0xFFFF -y 163 0xc0000000 -x 189 0x10 -y 189 0x4000000 -x 60 512 -gnuvsn 110400 -x 69 0x200 -x 123 0x400 -cmdline '+nvc++ /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -v -MD -MT CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -c' -asm /tmp/nvc++QqJuc_iBiW0Kp.ll]
+        ignore line: [NVC++/x86-64 Linux 24.5-1: compilation successful]
+        ignore line: []
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/share/llvm/bin/llc /tmp/nvc++QqJuc_iBiW0Kp.ll -march=x86-64 -mcpu=native -mattr=+mmx -mattr=+sse -mattr=+sse2 -mattr=+sse3 -mattr=+ssse3 -mattr=+sse4a -mattr=+sse4.1 -mattr=+sse4.2 -mattr=+avx -mattr=+avx2 -mattr=+f16c -mattr=+fma -mattr=+xsave -mattr=+xsaveopt -mattr=+xsavec -mattr=+xsaves -mattr=+popcnt -mattr=+sha -mattr=+aes -mattr=+pclmul -mattr=+clflushopt -mattr=+fsgsbase -mattr=+rdrnd -mattr=+bmi -mattr=+bmi2 -mattr=+lzcnt -mattr=+fxsr -mattr=+mwaitx -mattr=+clzero -mattr=+pku -mattr=+vaes -mattr=+vpclmulqdq -mattr=+adx -mattr=+clwb -mattr=+cx16 -mattr=+movbe -mattr=+prfchw -mattr=+rdpid -mattr=+rdseed -mattr=+sahf -mattr=+shstk -mattr=+wbnoinvd -O1 -x86-cmov-converter=0 -dwarf-directory=false -non-global-value-max-name-size=4294967295 --align-all-functions=6 -nvhpc-memzero -filetype=obj --frame-pointer=none -o CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [Unlinking /tmp/nvc++kqJucEZ6u40fr.il]
+        ignore line: [Unlinking /tmp/nvc++AqJucoprj4dgO.s]
+        ignore line: [Unlinking /tmp/nvc++QqJuc_iBiW0Kp.ll]
+        ignore line: [Unlinking /tmp/nvc++6qJucUq0OfUPI.llvm]
+        ignore line: [Linking CXX executable cmTC_0a146]
+        ignore line: [/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0a146.dir/link.txt --verbose=1]
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -v CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_0a146 ]
+        ignore line: [Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5]
+        ignore line: [Export PGI=/opt/nvidia/hpc_sdk]
+        ignore line: []
+        link line: [/usr/bin/ld /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -T /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib/nvhpc.ld -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -L/usr/lib64 -L/usr/lib/gcc/x86_64-linux-gnu/11/ CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o -rpath /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -o cmTC_0a146 -L/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64 -latomic -lnvhpcatm -lstdc++ -lnvomp -ldl --as-needed -lnvhpcatm -latomic --no-as-needed -lpthread -lnvcpumath -lnsnvc -lnvc -lgcc -lc -lgcc_s -lm /usr/lib/gcc/x86_64-linux-gnu/11//crtend.o /usr/lib/x86_64-linux-gnu/crtn.o]
+          arg [/usr/bin/ld] ==> ignore
+          arg [/usr/lib/x86_64-linux-gnu/crt1.o] ==> obj [/usr/lib/x86_64-linux-gnu/crt1.o]
+          arg [/usr/lib/x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o]
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-T] ==> ignore
+          arg [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib/nvhpc.ld] ==> ignore
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib]
+          arg [-L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib] ==> dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib]
+          arg [-L/usr/lib64] ==> dir [/usr/lib64]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/]
+          arg [CMakeFiles/cmTC_0a146.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_0a146] ==> ignore
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64]
+          arg [-latomic] ==> lib [atomic]
+          arg [-lnvhpcatm] ==> lib [nvhpcatm]
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lnvomp] ==> lib [nvomp]
+          arg [-ldl] ==> lib [dl]
+          arg [--as-needed] ==> ignore
+          arg [-lnvhpcatm] ==> lib [nvhpcatm]
+          arg [-latomic] ==> lib [atomic]
+          arg [--no-as-needed] ==> ignore
+          arg [-lpthread] ==> lib [pthread]
+          arg [-lnvcpumath] ==> lib [nvcpumath]
+          arg [-lnsnvc] ==> lib [nsnvc]
+          arg [-lnvc] ==> lib [nvc]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lm] ==> lib [m]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11//crtend.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11//crtend.o]
+          arg [/usr/lib/x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/11/crtbegin.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11//crtend.o] ==> [/usr/lib/gcc/x86_64-linux-gnu/11/crtend.o]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib]
+        collapse library dir [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib] ==> [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib]
+        collapse library dir [/usr/lib64] ==> [/usr/lib64]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/] ==> [/usr/lib/gcc/x86_64-linux-gnu/11]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64] ==> [/usr/lib64]
+        implicit libs: [atomic;nvhpcatm;stdc++;nvomp;dl;nvhpcatm;atomic;pthread;nvcpumath;nsnvc;nvc;gcc;c;gcc_s;m]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/crt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtbegin.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtend.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib;/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib;/usr/lib64;/usr/lib/gcc/x86_64-linux-gnu/11]
+        implicit fwks: []
+      
+      
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CheckCXXSourceCompiles.cmake:76 (cmake_check_source_compiles)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindThreads.cmake:99 (CHECK_CXX_SOURCE_COMPILES)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindCUDAToolkit.cmake:1009 (find_package)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/kokkos/kokkos/build/install/lib/cmake/Kokkos/KokkosConfig.cmake:39 (FIND_DEPENDENCY)"
+      - "CMakeLists.txt:9 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_7ff93/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_7ff93.dir/build.make CMakeFiles/cmTC_7ff93.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY'
+        Building CXX object CMakeFiles/cmTC_7ff93.dir/src.cxx.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -DCMAKE_HAVE_LIBC_PTHREAD  --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_7ff93.dir/src.cxx.o -MF CMakeFiles/cmTC_7ff93.dir/src.cxx.o.d -o CMakeFiles/cmTC_7ff93.dir/src.cxx.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY/src.cxx
+        Linking CXX executable cmTC_7ff93
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7ff93.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ CMakeFiles/cmTC_7ff93.dir/src.cxx.o -o cmTC_7ff93 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-xpV4lY'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:219 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:483 (_OPENMP_GET_FLAGS)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/kokkos/kokkos/build/install/lib/cmake/Kokkos/KokkosConfig.cmake:40 (FIND_DEPENDENCY)"
+      - "CMakeLists.txt:9 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_mp"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_0f5e3/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_0f5e3.dir/build.make CMakeFiles/cmTC_0f5e3.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo'
+        Building CXX object CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++   -mp -v --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp
+        Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5
+        Export PGI=/opt/nvidia/hpc_sdk
+        Create file CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d
+        
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/nvcpfe -- --llalign -D__GNUC__=11 -D__GNUC_MINOR__=4 -D__GNUC_PATCHLEVEL__=0 -D__unix -D__unix__ -D__linux -D__linux__ -D__NO_MATH_INLINES -D__LP64__ -D__x86_64 -D__x86_64__ -D__LONG_MAX__=9223372036854775807L '-D__SIZE_TYPE__=unsigned long int' '-D__PTRDIFF_TYPE__=long int' -D__amd64 -D__amd64__ -D__k8 -D__k8__ -D__MMX__ -D__SSE_MATH__ -D__MMX_WITH_SSE__ -D__SSE__ -D__SSE2__ -D__SSE2_MATH__ -D__SSE3__ -D__SSSE3__ -D__SSE4A__ -D__SSE4_1__ -D__SSE4_2__ -D__ABM__ -D__ADX__ -D__AES__ -D__AVX__ -D__AVX2__ -D__BMI__ -D__BMI2__ -D__CLFLUSHOPT__ -D__CLWB__ -D__CLZERO__ -D__CX16__ -D__F16C__ -D__FMA__ -D__FSGSBASE__ -D__FXSR__ -D__LZCNT__ -D__MOVBE__ -D__MWAITX__ -D__PCLMUL__ -D__PKU__ -D__POPCNT__ -D__PRFCHW__ -D__RDPID__ -D__RDRND__ -D__RDSEED__ -D__LAHF_SAHF__ -D__SHA__ -D__SHSTK__ -D__VAES__ -D__VPCLMULQDQ__ -D__WBNOINVD__ -D__XSAVE__ -D__XSAVEC__ -D__XSAVEOPT__ -D__XSAVES__ -D__PGI -D__NVCOMPILER -D_GNU_SOURCE -D_PGCG_SOURCE --c++17 -I- -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/extras/qd/include/qd -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nvshmem/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nccl/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/math_libs/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include-stdexec --sys_include /usr/include/c++/11 --sys_include /usr/include/x86_64-linux-gnu/c++/11 --sys_include /usr/include/c++/11/backward --sys_include /usr/lib/gcc/x86_64-linux-gnu/11/include --sys_include /usr/local/include --sys_include /usr/include/x86_64-linux-gnu --sys_include /usr/include -D__PGLLVM__ -D__NVCOMPILER_LLVM__ -D__extension__= -D_OPENMP=202011 -DPGI_TESLA_TARGET --preinclude _cplus_preinclude.h --preinclude_macros _cplus_macros.h --gnu_version=110400 -D__pgnu_vsn=110400 --no_fixed_bp --mp -D_OPENMP=202011 --gnu_extensions --dependencies_target_to_stdout CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o --dependencies_to_file CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -q -o /tmp/nvc++hz7ucvqvb1pGq.il /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -- /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -opt 1 -x 119 0xa10000 -x 122 0x40 -x 123 0x1000 -x 127 4 -x 127 17 -x 19 0x400000 -x 28 0x40000 -x 120 0x10000000 -x 70 0x8000 -x 122 1 -x 125 0x20000 -quad -x 59 4 -tp znver3 -x 120 0x1000 -astype 0 -x 121 1 -fn /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -il /tmp/nvc++hz7ucvqvb1pGq.il -x 117 0x200 -x 123 0x80000000 -x 123 4 -x 2 0x400 -x 209 0x10 -x 119 0x20 -def __pgnu_vsn=110400 -x 70 0x40000000 -x 183 4 -x 121 0x800 -x 6 0x20000 -x 249 170 -x 120 0x200000 -x 70 0x40000000 -x 8 0x40000000 -x 164 0x800000 -x 71 0x2000 -x 71 0x4000 -x 34 0x40000000 -x 120 0x1000000 -x 73 0x04 -x 231 0x800 -x 68 0x1 -x 39 4 -x 56 0x10 -x 26 0x10 -x 26 1 -x 56 0x4000 -x 197 0 -x 175 0 -x 203 0 -x 204 0 -x 227 0xFFFF -y 163 0xc0000000 -x 189 0x10 -y 189 0x4000000 -x 60 512 -mp -x 69 0x200 -x 69 0x400 -x 69 2 -gnuvsn 110400 -x 69 0x200 -x 123 0x400 -x 180 0x4000000 -x 194 0x20000000 -x 251 0x2 -cmdline '+nvc++ /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -mp -v --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -c' -asm /tmp/nvc++3z7ucLQ5IDFti.ll
+        NVC++/x86-64 Linux 24.5-1: compilation successful
+        
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/share/llvm/bin/llc /tmp/nvc++3z7ucLQ5IDFti.ll -march=x86-64 -mcpu=native -mattr=+mmx -mattr=+sse -mattr=+sse2 -mattr=+sse3 -mattr=+ssse3 -mattr=+sse4a -mattr=+sse4.1 -mattr=+sse4.2 -mattr=+avx -mattr=+avx2 -mattr=+f16c -mattr=+fma -mattr=+xsave -mattr=+xsaveopt -mattr=+xsavec -mattr=+xsaves -mattr=+popcnt -mattr=+sha -mattr=+aes -mattr=+pclmul -mattr=+clflushopt -mattr=+fsgsbase -mattr=+rdrnd -mattr=+bmi -mattr=+bmi2 -mattr=+lzcnt -mattr=+fxsr -mattr=+mwaitx -mattr=+clzero -mattr=+pku -mattr=+vaes -mattr=+vpclmulqdq -mattr=+adx -mattr=+clwb -mattr=+cx16 -mattr=+movbe -mattr=+prfchw -mattr=+rdpid -mattr=+rdseed -mattr=+sahf -mattr=+shstk -mattr=+wbnoinvd -O1 -x86-cmov-converter=0 -dwarf-directory=false -non-global-value-max-name-size=4294967295 --align-all-functions=6 -nvhpc-memzero -filetype=obj --frame-pointer=none -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o
+        Unlinking /tmp/nvc++hz7ucvqvb1pGq.il
+        Unlinking /tmp/nvc++-z7uc9sFRnycO.s
+        Unlinking /tmp/nvc++3z7ucLQ5IDFti.ll
+        Unlinking /tmp/nvc++Vz7ucn-MX_tRr.llvm
+        Linking CXX executable cmTC_0f5e3
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0f5e3.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -mp -v CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -o cmTC_0f5e3  -v 
+        Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5
+        Export PGI=/opt/nvidia/hpc_sdk
+        
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/acclnk /usr/bin/ld /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -T /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib/nvhpc.ld -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -L/usr/lib64 -L/usr/lib/gcc/x86_64-linux-gnu/11/ CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -rpath /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -o cmTC_0f5e3 -L/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64 -lacchost -ldl -latomic -lnvhpcatm -lstdc++ -lnvomp -ldl --as-needed -lnvhpcatm -latomic --no-as-needed -lpthread -lnvcpumath -lnsnvc -lnvc -lgcc -lc -lgcc_s -lm /usr/lib/gcc/x86_64-linux-gnu/11//crtend.o /usr/lib/x86_64-linux-gnu/crtn.o
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:262 (message)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:483 (_OPENMP_GET_FLAGS)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/kokkos/kokkos/build/install/lib/cmake/Kokkos/KokkosConfig.cmake:40 (FIND_DEPENDENCY)"
+      - "CMakeLists.txt:9 (find_package)"
+    message: |
+      Parsed CXX OpenMP implicit link information from above output:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo]
+        ignore line: []
+        ignore line: [Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_0f5e3/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_0f5e3.dir/build.make CMakeFiles/cmTC_0f5e3.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo']
+        ignore line: [Building CXX object CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o]
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++   -mp -v --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp]
+        ignore line: [Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5]
+        ignore line: [Export PGI=/opt/nvidia/hpc_sdk]
+        ignore line: [Create file CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d]
+        ignore line: []
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/nvcpfe -- --llalign -D__GNUC__=11 -D__GNUC_MINOR__=4 -D__GNUC_PATCHLEVEL__=0 -D__unix -D__unix__ -D__linux -D__linux__ -D__NO_MATH_INLINES -D__LP64__ -D__x86_64 -D__x86_64__ -D__LONG_MAX__=9223372036854775807L '-D__SIZE_TYPE__=unsigned long int' '-D__PTRDIFF_TYPE__=long int' -D__amd64 -D__amd64__ -D__k8 -D__k8__ -D__MMX__ -D__SSE_MATH__ -D__MMX_WITH_SSE__ -D__SSE__ -D__SSE2__ -D__SSE2_MATH__ -D__SSE3__ -D__SSSE3__ -D__SSE4A__ -D__SSE4_1__ -D__SSE4_2__ -D__ABM__ -D__ADX__ -D__AES__ -D__AVX__ -D__AVX2__ -D__BMI__ -D__BMI2__ -D__CLFLUSHOPT__ -D__CLWB__ -D__CLZERO__ -D__CX16__ -D__F16C__ -D__FMA__ -D__FSGSBASE__ -D__FXSR__ -D__LZCNT__ -D__MOVBE__ -D__MWAITX__ -D__PCLMUL__ -D__PKU__ -D__POPCNT__ -D__PRFCHW__ -D__RDPID__ -D__RDRND__ -D__RDSEED__ -D__LAHF_SAHF__ -D__SHA__ -D__SHSTK__ -D__VAES__ -D__VPCLMULQDQ__ -D__WBNOINVD__ -D__XSAVE__ -D__XSAVEC__ -D__XSAVEOPT__ -D__XSAVES__ -D__PGI -D__NVCOMPILER -D_GNU_SOURCE -D_PGCG_SOURCE --c++17 -I- -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/extras/qd/include/qd -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nvshmem/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/nccl/include -I/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/math_libs/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include --sys_include /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/include-stdexec --sys_include /usr/include/c++/11 --sys_include /usr/include/x86_64-linux-gnu/c++/11 --sys_include /usr/include/c++/11/backward --sys_include /usr/lib/gcc/x86_64-linux-gnu/11/include --sys_include /usr/local/include --sys_include /usr/include/x86_64-linux-gnu --sys_include /usr/include -D__PGLLVM__ -D__NVCOMPILER_LLVM__ -D__extension__= -D_OPENMP=202011 -DPGI_TESLA_TARGET --preinclude _cplus_preinclude.h --preinclude_macros _cplus_macros.h --gnu_version=110400 -D__pgnu_vsn=110400 --no_fixed_bp --mp -D_OPENMP=202011 --gnu_extensions --dependencies_target_to_stdout CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o --dependencies_to_file CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -q -o /tmp/nvc++hz7ucvqvb1pGq.il /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -- /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -opt 1 -x 119 0xa10000 -x 122 0x40 -x 123 0x1000 -x 127 4 -x 127 17 -x 19 0x400000 -x 28 0x40000 -x 120 0x10000000 -x 70 0x8000 -x 122 1 -x 125 0x20000 -quad -x 59 4 -tp znver3 -x 120 0x1000 -astype 0 -x 121 1 -fn /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -il /tmp/nvc++hz7ucvqvb1pGq.il -x 117 0x200 -x 123 0x80000000 -x 123 4 -x 2 0x400 -x 209 0x10 -x 119 0x20 -def __pgnu_vsn=110400 -x 70 0x40000000 -x 183 4 -x 121 0x800 -x 6 0x20000 -x 249 170 -x 120 0x200000 -x 70 0x40000000 -x 8 0x40000000 -x 164 0x800000 -x 71 0x2000 -x 71 0x4000 -x 34 0x40000000 -x 120 0x1000000 -x 73 0x04 -x 231 0x800 -x 68 0x1 -x 39 4 -x 56 0x10 -x 26 0x10 -x 26 1 -x 56 0x4000 -x 197 0 -x 175 0 -x 203 0 -x 204 0 -x 227 0xFFFF -y 163 0xc0000000 -x 189 0x10 -y 189 0x4000000 -x 60 512 -mp -x 69 0x200 -x 69 0x400 -x 69 2 -gnuvsn 110400 -x 69 0x200 -x 123 0x400 -x 180 0x4000000 -x 194 0x20000000 -x 251 0x2 -cmdline '+nvc++ /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo/OpenMPTryFlag.cpp -mp -v --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -c' -asm /tmp/nvc++3z7ucLQ5IDFti.ll]
+        ignore line: [NVC++/x86-64 Linux 24.5-1: compilation successful]
+        ignore line: []
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/share/llvm/bin/llc /tmp/nvc++3z7ucLQ5IDFti.ll -march=x86-64 -mcpu=native -mattr=+mmx -mattr=+sse -mattr=+sse2 -mattr=+sse3 -mattr=+ssse3 -mattr=+sse4a -mattr=+sse4.1 -mattr=+sse4.2 -mattr=+avx -mattr=+avx2 -mattr=+f16c -mattr=+fma -mattr=+xsave -mattr=+xsaveopt -mattr=+xsavec -mattr=+xsaves -mattr=+popcnt -mattr=+sha -mattr=+aes -mattr=+pclmul -mattr=+clflushopt -mattr=+fsgsbase -mattr=+rdrnd -mattr=+bmi -mattr=+bmi2 -mattr=+lzcnt -mattr=+fxsr -mattr=+mwaitx -mattr=+clzero -mattr=+pku -mattr=+vaes -mattr=+vpclmulqdq -mattr=+adx -mattr=+clwb -mattr=+cx16 -mattr=+movbe -mattr=+prfchw -mattr=+rdpid -mattr=+rdseed -mattr=+sahf -mattr=+shstk -mattr=+wbnoinvd -O1 -x86-cmov-converter=0 -dwarf-directory=false -non-global-value-max-name-size=4294967295 --align-all-functions=6 -nvhpc-memzero -filetype=obj --frame-pointer=none -o CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o]
+        ignore line: [Unlinking /tmp/nvc++hz7ucvqvb1pGq.il]
+        ignore line: [Unlinking /tmp/nvc++-z7uc9sFRnycO.s]
+        ignore line: [Unlinking /tmp/nvc++3z7ucLQ5IDFti.ll]
+        ignore line: [Unlinking /tmp/nvc++Vz7ucn-MX_tRr.llvm]
+        ignore line: [Linking CXX executable cmTC_0f5e3]
+        ignore line: [/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0f5e3.dir/link.txt --verbose=1]
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -mp -v CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -o cmTC_0f5e3  -v ]
+        ignore line: [Export NVCOMPILER=/opt/nvidia/hpc_sdk/Linux_x86_64/24.5]
+        ignore line: [Export PGI=/opt/nvidia/hpc_sdk]
+        ignore line: []
+        ignore line: [/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/tools/acclnk /usr/bin/ld /usr/lib/x86_64-linux-gnu/crt1.o /usr/lib/x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11//crtbegin.o --eh-frame-hdr -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -T /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib/nvhpc.ld -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/nccl_rdma_sharp_plugin/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/sharp/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/hcoll/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucc/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ucx/lib -L/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -L/usr/lib64 -L/usr/lib/gcc/x86_64-linux-gnu/11/ CMakeFiles/cmTC_0f5e3.dir/OpenMPTryFlag.cpp.o -rpath /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/lib -o cmTC_0f5e3 -L/usr/lib/gcc/x86_64-linux-gnu/11//../../../../lib64 -lacchost -ldl -latomic -lnvhpcatm -lstdc++ -lnvomp -ldl --as-needed -lnvhpcatm -latomic --no-as-needed -lpthread -lnvcpumath -lnsnvc -lnvc -lgcc -lc -lgcc_s -lm /usr/lib/gcc/x86_64-linux-gnu/11//crtend.o /usr/lib/x86_64-linux-gnu/crtn.o]
+        ignore line: [gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-HLfUFo']
+        ignore line: []
+        ignore line: []
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:419 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindOpenMP.cmake:557 (_OPENMP_GET_SPEC_DATE)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/kokkos/kokkos/build/install/lib/cmake/Kokkos/KokkosConfig.cmake:40 (FIND_DEPENDENCY)"
+      - "CMakeLists.txt:9 (find_package)"
+    description: "Detecting CXX OpenMP version"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "OpenMP_SPECTEST_CXX_"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_86ddc/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_86ddc.dir/build.make CMakeFiles/cmTC_86ddc.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3'
+        Building CXX object CMakeFiles/cmTC_86ddc.dir/OpenMPCheckVersion.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++   -mp --c++17 --gnu_extensions -MD -MT CMakeFiles/cmTC_86ddc.dir/OpenMPCheckVersion.cpp.o -MF CMakeFiles/cmTC_86ddc.dir/OpenMPCheckVersion.cpp.o.d -o CMakeFiles/cmTC_86ddc.dir/OpenMPCheckVersion.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3/OpenMPCheckVersion.cpp
+        Linking CXX executable cmTC_86ddc
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_86ddc.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -mp CMakeFiles/cmTC_86ddc.dir/OpenMPCheckVersion.cpp.o -o cmTC_86ddc 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-yenHE3'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_22967/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_22967.dir/build.make CMakeFiles/cmTC_22967.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw'
+        Building CXX object CMakeFiles/cmTC_22967.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_22967.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_22967.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_22967.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw/test_mpi.cpp
+        Linking CXX executable cmTC_22967
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_22967.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_22967.dir/test_mpi.cpp.o -o cmTC_22967  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-c2cquw'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_aafe7/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_aafe7.dir/build.make CMakeFiles/cmTC_aafe7.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf'
+        Building CXX object CMakeFiles/cmTC_aafe7.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_aafe7.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_aafe7.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_aafe7.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf/test_mpi.cpp
+        Linking CXX executable cmTC_aafe7
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aafe7.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_aafe7.dir/test_mpi.cpp.o -o cmTC_aafe7  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vgWYYf'
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_ef1ce/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_ef1ce.dir/build.make CMakeFiles/cmTC_ef1ce.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol'
+        Building CXX object CMakeFiles/cmTC_ef1ce.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_ef1ce.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_ef1ce.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_ef1ce.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol/test_mpi.cpp
+        Linking CXX executable cmTC_ef1ce
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ef1ce.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_ef1ce.dir/test_mpi.cpp.o -o cmTC_ef1ce  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-vKR7ol'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_69da6/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_69da6.dir/build.make CMakeFiles/cmTC_69da6.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN'
+        Building CXX object CMakeFiles/cmTC_69da6.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_69da6.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_69da6.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_69da6.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN/test_mpi.cpp
+        Linking CXX executable cmTC_69da6
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_69da6.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_69da6.dir/test_mpi.cpp.o -o cmTC_69da6  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-7kKjWN'
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_68d36/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_68d36.dir/build.make CMakeFiles/cmTC_68d36.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ'
+        Building CXX object CMakeFiles/cmTC_68d36.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_68d36.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_68d36.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_68d36.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ/test_mpi.cpp
+        Linking CXX executable cmTC_68d36
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_68d36.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_68d36.dir/test_mpi.cpp.o -o cmTC_68d36  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-CP4jDJ'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_89436/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_89436.dir/build.make CMakeFiles/cmTC_89436.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ'
+        Building CXX object CMakeFiles/cmTC_89436.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_89436.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_89436.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_89436.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ/test_mpi.cpp
+        Linking CXX executable cmTC_89436
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_89436.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_89436.dir/test_mpi.cpp.o -o cmTC_89436  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-FtxNuZ'
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_b5451/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b5451.dir/build.make CMakeFiles/cmTC_b5451.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq'
+        Building CXX object CMakeFiles/cmTC_b5451.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_b5451.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_b5451.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_b5451.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq/test_mpi.cpp
+        Linking CXX executable cmTC_b5451
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b5451.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_b5451.dir/test_mpi.cpp.o -o cmTC_b5451  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-jKQMZq'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana/CabanaConfig.cmake:18 (find_dependency)"
+      - "CMakeLists.txt:10 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI"
+      binary: "/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g -O0"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/zbarbeau/GPU/Cabana/build/install/share/cmake/Cabana"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI
+        
+        Run Build Command(s):/auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_95a49/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_95a49.dir/build.make CMakeFiles/cmTC_95a49.dir/build
+        gmake[1]: Entering directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI'
+        Building CXX object CMakeFiles/cmTC_95a49.dir/test_mpi.cpp.o
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++  -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/hwloc/hwloc201/hwloc/include -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent -isystem /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/include/openmpi/opal/mca/event/libevent2022/libevent/include --c++17 -pthread -MD -MT CMakeFiles/cmTC_95a49.dir/test_mpi.cpp.o -MF CMakeFiles/cmTC_95a49.dir/test_mpi.cpp.o.d -o CMakeFiles/cmTC_95a49.dir/test_mpi.cpp.o -c /home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI/test_mpi.cpp
+        Linking CXX executable cmTC_95a49
+        /auto/software/swtree/ubuntu22.04/x86_64/cmake/3.26.3/bin/cmake -E cmake_link_script CMakeFiles/cmTC_95a49.dir/link.txt --verbose=1
+        /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/compilers/bin/nvc++ -Wl,-rpath -Wl,/opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib -Wl,--enable-new-dtags -pthread CMakeFiles/cmTC_95a49.dir/test_mpi.cpp.o -o cmTC_95a49  /opt/nvidia/hpc_sdk/Linux_x86_64/24.5/comm_libs/12.4/hpcx/hpcx-2.19/ompi/lib/libmpi.so 
+        gmake[1]: Leaving directory '/home/zbarbeau/GPU/standalone/build/CMakeFiles/CMakeScratch/TryCompile-rFYjZI'
+        
+      exitCode: 0
+...
