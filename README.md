@@ -14,7 +14,7 @@ export CABANA_INSTALL=~/Cabana/build/install
       -D Kokkos_ENABLE_OPENMP=ON \
       -D Kokkos_ENABLE_CUDA=ON \
       -D Kokkos_ENABLE_CUDA_LAMBDA=ON \
-      -D Kokkos_ARCH_KEPLER30=ON \
+      -D Kokkos_ENABLE_IMPL_VIEW_LEGACY=ON \
       \
       .. ;
     make install
