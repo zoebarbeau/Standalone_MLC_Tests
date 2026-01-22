@@ -42,10 +42,6 @@ export CABANA_INSTALL=~/Cabana/build/install
 cd standalone
 mkdir build
 cd build
-cmake \
-  -D CMAKE_BUILD_TYPE="Debug" \
-  -D CMAKE_PREFIX_PATH="$CABANA_INSTALL_DIR;$KOKKOS_INSTALL_DIR" \
-  -D CMAKE_INSTALL_PREFIX=install \
-  .. ;
-make install
+cmake ..   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_PREFIX_PATH="$KOKKOS_INSTALL_DIR;$CABANA_INSTALL_DIR"
+make 
 ```
