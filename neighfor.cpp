@@ -84,7 +84,8 @@ void Calculate_qK( const double xp[3], const double xq[3],
 using ParticleTypes = Cabana::MemberTypes<
     double[3], // position
     double[3], // vorticity
-    double[3]  // velocity
+    double[3], // velocity
+    double[3]  // vorticity advection
 >;
 
 using AoSoA_t = Cabana::AoSoA<ParticleTypes, MemorySpace>;
@@ -97,7 +98,8 @@ void init_hills_vortex( const double R,
                         const double U,
                         const double x[3],
                         double vort[3],
-                        double vel[3] )
+                        double vel[3],
+			double advect_vort[3] )
 {
     double dx = x[0] - 0.5;
     double dy = x[1] - 0.5;
@@ -113,90 +115,70 @@ void init_hills_vortex( const double R,
     else
         vort[0] = vort[1] = vort[2] = 0.0;
 
+    advect_vort[0]=advect_vort[1]=advect_vort[2]=0.0;
     vel[0] = vel[1] = vel[2] = 0.0;
-}
-
-/*===========================================================
-  Uniform Particle Positions
-===========================================================*/
-template<class PositionSlice>
-void create_positions( PositionSlice x, int nx )
-{
-    int N = nx*nx*nx;
-
-    Kokkos::parallel_for(
-        "init_positions",
-        Kokkos::RangePolicy<ExecutionSpace>(0,N),
-        KOKKOS_LAMBDA(int p)
-    {
-        int i = p % nx;
-        int j = (p/nx) % nx;
-        int k = p/(nx*nx);
-
-        x(p,0) = (i+0.5)/nx;
-        x(p,1) = (j+0.5)/nx;
-        x(p,2) = (k+0.5)/nx;
-    });
 }
 
 /*===========================================================
   Neighbor Interaction Kernel
 ===========================================================*/
-template<class NeighborList,class PositionSlice, class VortSlice, class VelSlice>
+template<class NeighborList,class PositionSlice,class AdvectSlice, class VortSlice, class VelSlice>
 void run_neighbors( int N,
                     PositionSlice x,
                     VortSlice vort,
                     VelSlice vel,
+		    AdvectSlice advectVort,
                     NeighborList& nlist,
                     double h,
-                    int corr_radius,
-		    bool use_outer)
+                    int corr_radius)
 {   std::cout << " N " << N << std::endl;
 
     using neighbor_traits = Cabana::NeighborList<NeighborList>;
-    Kokkos::Timer timer;  
-    if( use_outer ) {
-        Kokkos::View<int*, MemorySpace> d_counts("d_counts", N);
-        Kokkos::View<int*, Kokkos::HostSpace> h_counts("h_counts", N);
     
-        // Fill counts on device
-        Kokkos::parallel_for("ComputeNeighborCounts", N, KOKKOS_LAMBDA(int q){
-            d_counts(q) = neighbor_traits::numNeighbor(nlist, q);
-        });
-        Kokkos::fence();
+    Kokkos::View<std::size_t, MemorySpace> d_total("d_total");
     
-        // Copy to host
-        Kokkos::deep_copy(h_counts, d_counts);
-    
-        // Serial loop over q, parallel over neighbors
-        for(int q=0; q<N; ++q){
-            int numNeigh = h_counts(q);
-            Kokkos::parallel_for(
-                "interactions2",
-                Kokkos::RangePolicy<ExecutionSpace>(0,numNeigh),
-                KOKKOS_LAMBDA(int i){
-                    int p = neighbor_traits::getNeighbor(nlist, q, i);
-    
-                    // rest of your kernel
-                }
-            );
-//            Kokkos::fence();
+    Kokkos::parallel_for(
+        "GetTotalNeighbors",
+        1,
+        KOKKOS_LAMBDA(const int) {
+            d_total() = neighbor_traits::totalNeighbor(nlist);
         }
-    
-    }else{
-         auto kernel = KOKKOS_LAMBDA( int p, int q )
+    );
+    Kokkos::fence();
+
+    auto h_total =
+    Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), d_total);
+    std::cout << "TOTAL NEIGHBORS = " << h_total() << std::endl;   
+
+    Kokkos::Timer timer;  
+    auto kernel = KOKKOS_LAMBDA( int p, int q )
          {
-             double K[3];
+             double K[3],Kp[3],Km[3];
 
              double xp[3] = { x(p,0), x(p,1), x(p,2) };
              double xq[3] = { x(q,0), x(q,1), x(q,2) };
              double uq[3] = { vort(q,0), vort(q,1), vort(q,2) };
+             double xplus[3],xminus[3];
+
+	     for(int d = 0; d < 3; d++)
+             {
+                    xminus[d] = xp[d] - 0.5*h*vort(p,d);
+                    xplus[d]  = xp[d] + 0.5*h*vort(p,d);
+
+             }
+
 
              GreensFunction::Calculate_qK(
                  xp, xq, uq, K, h, corr_radius );
+             GreensFunction::Calculate_qK(
+                 xplus, xq, uq, Kp, h, corr_radius );
+             GreensFunction::Calculate_qK(
+                 xminus, xq, uq, Km, h, corr_radius );
 
-             for (int d=0; d<3; d++)
+             for (int d=0; d<3; d++){
                  vel(p,d) += K[d];
+		 advectVort(p,d) += ( Kp[d] - Km[d] )/ h;
+	     }
          };
 
          Cabana::neighbor_parallel_for(
@@ -206,7 +188,6 @@ void run_neighbors( int N,
              Cabana::FirstNeighborsTag(),
              Cabana::SerialOpTag(), "neighbor_op"
          );
-    }
 
     Kokkos::fence();
     double time = timer.seconds();
@@ -228,9 +209,9 @@ void generate_hills_vortex(
         for (int j=0;j<nx;j++)
             for (int k=0;k<nx;k++)
             {
-                double x = (i+0.5)*h;
-                double y = (j+0.5)*h;
-                double z = (k+0.5)*h;
+                double x = i*h; // (i+0.5)*h;
+                double y = j*h; // (j+0.5)*h;
+                double z = k*h; //  (k+0.5)*h;
 
                 double dx = x - 0.5;
                 double dy = y - 0.5;
@@ -262,7 +243,7 @@ int main( int argc, char* argv[] )
 	std::cout << "Kokkos execution space: "
           << ExecutionSpace::name() << std::endl;
 
-        int nx = 128;                // particles per dimension
+        int nx = 64;               // particles per dimension
         int N  = nx*nx*nx;
 	int np = 2;
         double h = 1.0 / nx;
@@ -270,8 +251,6 @@ int main( int argc, char* argv[] )
         int corr_radius = 4;
         double cutoff = 2.5 * h;
 
-        bool use_verlet = true;      // switch neighbor list
-        bool use_outer  = false;
         double grid_min[3] = {0.0,0.0,0.0};
         double grid_max[3] = {1.0,1.0,1.0};
         double grid_delta[3] = {h,h,h};
@@ -286,56 +265,30 @@ int main( int argc, char* argv[] )
         auto x_h    = Cabana::slice<0>(particles_h);
         auto vort_h = Cabana::slice<1>(particles_h);
         auto vel_h  = Cabana::slice<2>(particles_h);
-        
+        auto advectvort_h =  Cabana::slice<3>(particles_h);
+
         for (int p = 0; p < numP; ++p){
             for (int d = 0; d < 3; ++d)
             {
                 x_h(p,d)    = h_pos[p][d];
                 vort_h(p,d) = h_vort[p][d];
                 vel_h(p,d)  = h_vel[p][d];
+		advectvort_h(p,d) = 0.0;
             }
 	}
  
 	Cabana::deep_copy(particles, particles_h);
 
-
         auto x    = Cabana::slice<0>(particles);
         auto vort = Cabana::slice<1>(particles);
         auto vel  = Cabana::slice<2>(particles);
+	auto advectvort = Cabana::slice<3>(particles);
 
-        if (use_verlet)
-        {   
+        using ListType = Cabana::LinkedCellList<MemorySpace,double>;      
 
-           using ListAlgorithm = Cabana::FullNeighborTag;
-           using ListType =
-                 Cabana::VerletList<MemorySpace, ListAlgorithm, Cabana::VerletLayoutCSR,
-                           Cabana::TeamOpTag>;	
-	
-       
-          double cutoff = corr_radius * h;
-          double skin   = h / cutoff;
-       
-          ListType verlet_list(
-           x,
-           0,
-           numP,
-           cutoff,
-           skin,
-           grid_min,
-           grid_max
-          );
-       
-           
-           // run neighbors
-           run_neighbors(numP, x, vort, vel, verlet_list, hp, corr_radius,use_outer);
-
-        }
-        else
-        {
-            using ListType = Cabana::LinkedCellList<MemorySpace,double>;        
-            ListType nlist( x, 0, particles.size(), grid_delta, grid_min, grid_max,corr_radius*h, 0.25 );
-            run_neighbors(particles.size(),x,vort,vel,nlist,hp,corr_radius, use_outer);
-        }
+        //  ListType nlist( x, 0, particles.size(), grid_delta, grid_min, grid_max,corr_radius*h, 0.25 );
+	auto nlist = std::make_shared<Cabana::LinkedCellList<MemorySpace,double>>( x, 0, particles.size(), grid_delta, grid_min, grid_max,corr_radius*h, 0.25 );
+        run_neighbors(particles.size(),x,vort,vel,advectvort,*nlist,hp,corr_radius);
  
     }
     Kokkos::finalize();
