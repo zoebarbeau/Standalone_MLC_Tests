@@ -6,14 +6,14 @@
 #include <iostream>
 #include <array>
 #include <mpi.h>
-// #include <Cabana_Grid.hpp>
+#include <Cabana_Grid.hpp>
 #include <Cabana_Grid_GlobalGrid.hpp>
 #include <Cabana_Grid_GlobalMesh.hpp>
 #include <Cabana_Grid_Partitioner.hpp>
 #include <Cabana_Grid_LocalGrid.hpp>
 #include <Cabana_Grid_LocalMesh.hpp>
-#include <Cabana_Grid_ParticleDistributor.hpp>
-
+//#include <Cabana_Grid_ParticleDistributor.hpp>
+#include <Cabana_Grid_ParticleGridDistributor.hpp> 
 /*===========================================================
   Execution / Memory Space
 ===========================================================*/
@@ -154,19 +154,6 @@ void run_neighbors( int N,
     using neighbor_traits = Cabana::NeighborList<NeighborList>;
     
     Kokkos::View<std::size_t, MemorySpace> d_total("d_total");
-    
-    Kokkos::parallel_for(
-        "GetTotalNeighbors",
-        1,
-        KOKKOS_LAMBDA(const int) {
-            d_total() = neighbor_traits::totalNeighbor(nlist);
-        }
-    );
-    Kokkos::fence();
-
-    auto h_total =
-    Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), d_total);
-    std::cout << "TOTAL NEIGHBORS = " << h_total() << std::endl;   
 
     Kokkos::Timer timer;  
     auto kernel = KOKKOS_LAMBDA( int p, int q )
@@ -269,9 +256,9 @@ int main( int argc, char* argv[] )
 
         int nx = 64;               // particles per dimension
         int N  = nx*nx*nx;
-	    int np = 2;
+	int np = 2;
         double h = 1.0 / nx;
-	    double hp = 1.0/(np*nx);
+	double hp = 1.0/(np*nx);
         int corr_radius = 4;
         double cutoff = 2.5 * h;
         Cabana::Grid::DimBlockPartitioner<3> dim_block_partitioner;
@@ -400,48 +387,108 @@ int main( int argc, char* argv[] )
         // }
         
         // --------------------------------------------------
-        // Defining the Hill's vortex initial condition
-	    std::vector<std::array<double,3>> h_pos;
-        std::vector<std::array<double,3>> h_vort;
-        std::vector<std::array<double,3>> h_vel;
 
         // Generate the Hill's vortex initial condition
-        generate_hills_vortex(nx*np,hp,0.25,1.0,h_pos,h_vort,h_vel);
+       
+       //	generate_hills_vortex(nx*np,hp,0.25,1.0,h_pos,h_vort,h_vel);
+       
+	// --------------------------------------------------
+       // Initialize Hill's vortex - only owned particles per rank
+       // --------------------------------------------------
+       std::vector<std::array<double,3>> h_pos;
+       std::vector<std::array<double,3>> h_vort;
+       std::vector<std::array<double,3>> h_vel;
+      
+       // Get the owned cell range for this rank
+       int i_min = owned_global.min(0) * np;
+       int i_max = owned_global.max(0) * np;
+       int j_min = owned_global.min(1) * np;
+       int j_max = owned_global.max(1) * np;
+       int k_min = owned_global.min(2) * np;
+       int k_max = owned_global.max(2) * np;
+       
+       std::cout << "Rank " << rank << " particle index range: ["
+                 << i_min << ", " << i_max << ") x ["
+                 << j_min << ", " << j_max << ") x ["
+                 << k_min << ", " << k_max << ")" << std::endl;
+       
+       // Only loop over particles in this rank's index range
+       for (int i = i_min; i < i_max; i++) {
+           for (int j = j_min; j < j_max; j++) {
+               for (int k = k_min; k < k_max; k++) {
+                   double px = i * hp;
+                   double py = j * hp;
+                   double pz = k * hp;
+       
+                   double dx_c = px - 0.5;
+                   double dy_c = py - 0.5;
+                   double dz_c = pz - 0.5;
+                   double r = std::sqrt(dx_c*dx_c + dy_c*dy_c + dz_c*dz_c);
+       
+                   if (r <= 0.25) {  // R = 0.25
+                       h_pos.push_back({px, py, pz});
+                       
+                       // Hill's vortex vorticity (volume weighted)
+                       h_vort.push_back({
+                           15.0 * 1.0 / (2.0 * 0.25 * 0.25) * dy_c * hp*hp*hp,
+                          -15.0 * 1.0 / (2.0 * 0.25 * 0.25) * dx_c * hp*hp*hp,
+                           0.0
+                       });
+                       
+                       h_vel.push_back({0.0, 0.0, 0.0});
+                   }
+               }
+           }
+       }
+       
+       int numP = h_pos.size();
+       std::cout << "Rank " << rank << " owned particles: " << numP << std::endl;
+       
+       // Sum across all ranks to check total
+       int total_particles = 0;
+       MPI_Allreduce(&numP, &total_particles, 1, MPI_INT, MPI_SUM, comm);
+       if (rank == 0) {
+           std::cout << "Total particles across all ranks: " << total_particles << std::endl; 
+              // Only generate particles within this rank's owned subdomain
+	      //
+       }
+       if (rank == 0) {
+           std::cout << "Total particles per rank (before halo): " << numP << std::endl;
+       }
+       
+       // Create AoSoA with only owned particles
+       AoSoA_t particles("particles", numP);
+       HostAoSoA_t particles_h("particles_h", numP);
+       
+       auto x_h = Cabana::slice<0>(particles_h);
+       auto vort_h = Cabana::slice<1>(particles_h);
+       auto vel_h = Cabana::slice<2>(particles_h);
+       auto advectvort_h = Cabana::slice<3>(particles_h);
+       
+       for (int p = 0; p < numP; ++p) {
+           for (int d = 0; d < 3; ++d) {
+               x_h(p,d) = h_pos[p][d];
+               vort_h(p,d) = h_vort[p][d];
+               vel_h(p,d) = h_vel[p][d];
+               advectvort_h(p,d) = 0.0;
+           }
+       }
+       
+       Cabana::deep_copy(particles, particles_h);
+       
+       auto x = Cabana::slice<0>(particles);
+       auto vort = Cabana::slice<1>(particles);
+       auto vel = Cabana::slice<2>(particles);
+       auto advectvort = Cabana::slice<3>(particles);
        
     // Figure out how many particles are in the local domain for this rank and create an AoSoA with that many particles. 
     // We will use the same AoSoA for all ranks but only fill the portion of the AoSoA that corresponds to the local domain on each rank. 
     // This is not strictly necessary but it allows us to use the same neighbor list construction and neighbor interaction code on all ranks without having to worry about different data structures on different ranks.
-        int numP = h_pos.size();
-        std::cout << "nump = " << numP << std::endl;
-        AoSoA_t particles("particles",numP);
-        HostAoSoA_t particles_h("particles_h", numP);
-        
-        auto x_h    = Cabana::slice<0>(particles_h);
-        auto vort_h = Cabana::slice<1>(particles_h);
-        auto vel_h  = Cabana::slice<2>(particles_h);
-        auto advectvort_h =  Cabana::slice<3>(particles_h);
-
-        for (int p = 0; p < numP; ++p){
-            for (int d = 0; d < 3; ++d)
-            {
-                x_h(p,d)    = h_pos[p][d];
-                vort_h(p,d) = h_vort[p][d];
-                vel_h(p,d)  = h_vel[p][d];
-		        advectvort_h(p,d) = 0.0;
-            }
-        }
- 
-	    Cabana::deep_copy(particles, particles_h);
-
-        auto x    = Cabana::slice<0>(particles);
-        auto vort = Cabana::slice<1>(particles);
-        auto vel  = Cabana::slice<2>(particles);
-	    auto advectvort = Cabana::slice<3>(particles);
 
      
         // std::cout << "Rank before migration:" << rank << "Particles size = " << particles.size() << std::endl;
 
-        Cabana::Grid::particleMigrate( *( local_grid ), x, particles, halo_width );
+        Cabana::Grid::particleGridMigrate( *( local_grid ), x, particles, halo_width );
 
         // slices after migrate as particles may have been reordered during migration
         x    = Cabana::slice<0>(particles);
@@ -639,15 +686,56 @@ int main( int argc, char* argv[] )
 
     // Defining the linked cell list
     // Defining the new local min and max for the linked cell list based on woed + ghost particles
+/*
+   std::array<double, 3> local_grid_min = {xmin - halo_radius, ymin - halo_radius, zmin - halo_radius};
+    std::array<double, 3> local_grid_max = {xmax + halo_radius, ymax + halo_radius, zmax + halo_radius};
+
+    using ListType = Cabana::LinkedCellList<MemorySpace,double>;
+    auto nlist = std::make_shared<Cabana::LinkedCellList<MemorySpace,double>>( x, 0, particles.size(), grid_delta, local_grid_min, local_grid_max,halo_radius, 0.25 );
+*/
 
     std::array<double, 3> local_grid_min = {xmin - halo_radius, ymin - halo_radius, zmin - halo_radius};
     std::array<double, 3> local_grid_max = {xmax + halo_radius, ymax + halo_radius, zmax + halo_radius};
 
     using ListType = Cabana::LinkedCellList<MemorySpace,double>;
-    auto nlist = std::make_shared<Cabana::LinkedCellList<MemorySpace,double>>( x, 0, particles.size(), grid_delta, local_grid_min, local_grid_max,halo_radius, 0.25 );
+    auto nlist = std::make_shared<Cabana::LinkedCellList<MemorySpace,double>>(
+      x,
+      0,
+      particles.size(),
+      grid_delta.data(),       // Convert std::array to pointer
+      local_grid_min.data(),   // Convert std::array to pointer
+      local_grid_max.data(),   // Convert std::array to pointer
+      halo_radius,
+      0.25
+    );
 
     // Computing local particle interations
-    run_neighbors(particles.size(),x,vort,vel,advectvort,*nlist,hp,corr_radius);
+    run_neighbors(num_owned_p,x,vort,vel,advectvort,*nlist,hp,corr_radius);
+
+     double vel_sum_local[3] = {0.0, 0.0, 0.0};
+
+    for (int d = 0; d < 3; d++) {
+        double sum_d = 0.0;
+        Kokkos::parallel_reduce(
+            "velocity_sum_owned",
+            Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+            KOKKOS_LAMBDA(const int p, double& local_sum) {
+                local_sum += vel(p, d);
+            },
+            sum_d
+        );
+        vel_sum_local[d] = sum_d;
+    }
+
+    double vel_sum_global[3];
+    MPI_Allreduce(vel_sum_local, vel_sum_global, 3, MPI_DOUBLE, MPI_SUM, comm);
+
+    if (rank == 0) {
+        std::cout << "Global velocity sum: ("
+                  << vel_sum_global[0] << ", "
+                  << vel_sum_global[1] << ", "
+                  << vel_sum_global[2] << ")" << std::endl;
+    }
  
 }
     Kokkos::finalize();

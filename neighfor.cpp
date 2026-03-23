@@ -106,14 +106,14 @@ void init_hills_vortex( const double R,
     double dz = x[2] - 0.5;
     double r  = sqrt(dx*dx + dy*dy + dz*dz);
 
-    if ( r < R )
-    {
+//    if ( r < R )
+//    {
         vort[0] =  15.0*U/(2.0*R*R) * dy;
         vort[1] = -15.0*U/(2.0*R*R) * dx;
         vort[2] =  0.0;
-    }
-    else
-        vort[0] = vort[1] = vort[2] = 0.0;
+//    }
+//    else
+//        vort[0] = vort[1] = vort[2] = 0.0;
 
     advect_vort[0]=advect_vort[1]=advect_vort[2]=0.0;
     vel[0] = vel[1] = vel[2] = 0.0;
@@ -136,20 +136,6 @@ void run_neighbors( int N,
     using neighbor_traits = Cabana::NeighborList<NeighborList>;
     
     Kokkos::View<std::size_t, MemorySpace> d_total("d_total");
-    
-    Kokkos::parallel_for(
-        "GetTotalNeighbors",
-        1,
-        KOKKOS_LAMBDA(const int) {
-            d_total() = neighbor_traits::totalNeighbor(nlist);
-        }
-    );
-    Kokkos::fence();
-
-    auto h_total =
-    Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), d_total);
-    std::cout << "TOTAL NEIGHBORS = " << h_total() << std::endl;   
-
     Kokkos::Timer timer;  
     auto kernel = KOKKOS_LAMBDA( int p, int q )
          {
@@ -190,8 +176,32 @@ void run_neighbors( int N,
          );
 
     Kokkos::fence();
+
     double time = timer.seconds();
     std::cout << "time= "<< time <<  " Neighbor test complete\n";
+
+
+    // Sum all velocity components
+    double vel_sum[3] = {0.0, 0.0, 0.0};
+    
+    for (int d = 0; d < 3; d++) {
+        double sum_d = 0.0;
+        Kokkos::parallel_reduce(
+            "velocity_sum",
+            Kokkos::RangePolicy<ExecutionSpace>(0, N),
+            KOKKOS_LAMBDA(const int p, double& local_sum) {
+                local_sum += vel(p, d);
+            },
+            sum_d
+        );
+        vel_sum[d] = sum_d;
+    }
+    
+    std::cout << "Velocity sum: (" 
+              << vel_sum[0] << ", " 
+              << vel_sum[1] << ", " 
+              << vel_sum[2] << ")" << std::endl;
+        
 
 }
 
@@ -219,6 +229,7 @@ void generate_hills_vortex(
                 double r  = std::sqrt(dx*dx + dy*dy + dz*dz);
 
                 if (r > R) continue;
+
 
                 pos.push_back({x,y,z});
 
@@ -283,7 +294,9 @@ int main( int argc, char* argv[] )
         auto vort = Cabana::slice<1>(particles);
         auto vel  = Cabana::slice<2>(particles);
 	auto advectvort = Cabana::slice<3>(particles);
-
+        std::cout << "pos  ptr = " << x.data()  << "\n";
+        std::cout << "vort ptr = " << vort.data() << "\n";
+        std::cout << "vel  ptr = " << vel.data()  << "\n";
         using ListType = Cabana::LinkedCellList<MemorySpace,double>;      
 
         //  ListType nlist( x, 0, particles.size(), grid_delta, grid_min, grid_max,corr_radius*h, 0.25 );
