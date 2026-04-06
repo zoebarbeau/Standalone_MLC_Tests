@@ -6,14 +6,14 @@
 #include <iostream>
 #include <array>
 #include <mpi.h>
-#include <Cabana_Grid.hpp>
+// #include <Cabana_Grid.hpp>
 #include <Cabana_Grid_GlobalGrid.hpp>
 #include <Cabana_Grid_GlobalMesh.hpp>
 #include <Cabana_Grid_Partitioner.hpp>
 #include <Cabana_Grid_LocalGrid.hpp>
 #include <Cabana_Grid_LocalMesh.hpp>
-//#include <Cabana_Grid_ParticleDistributor.hpp>
-#include <Cabana_Grid_ParticleGridDistributor.hpp> 
+#include <Cabana_Grid_ParticleDistributor.hpp> 
+
 /*===========================================================
   Execution / Memory Space
 ===========================================================*/
@@ -155,7 +155,7 @@ void run_neighbors( int N,
     
     Kokkos::View<std::size_t, MemorySpace> d_total("d_total");
 
-    Kokkos::Timer timer;  
+    // Kokkos::Timer timer;  
     auto kernel = KOKKOS_LAMBDA( int p, int q )
          {
              double K[3],Kp[3],Km[3];
@@ -194,9 +194,9 @@ void run_neighbors( int N,
              Cabana::SerialOpTag(), "neighbor_op"
          );
 
-    Kokkos::fence();
-    double time = timer.seconds();
-    std::cout << "time= "<< time <<  " Neighbor test complete\n";
+    // Kokkos::fence();
+    // double time_interactions = timer.seconds();
+    // std::cout << "time= "<< time_interactions <<  " Neighbor test complete\n";
 
 }
 
@@ -254,11 +254,11 @@ int main( int argc, char* argv[] )
 	    std::cout << "Kokkos execution space: "
           << ExecutionSpace::name() << std::endl;
 
-        int nx = 64;               // particles per dimension
+        int nx = 128;               // particles per dimension
         int N  = nx*nx*nx;
-	int np = 2;
+	    int np = 4;
         double h = 1.0 / nx;
-	double hp = 1.0/(np*nx);
+	    double hp = 1.0/(np*nx);
         int corr_radius = 4;
         double cutoff = 2.5 * h;
         Cabana::Grid::DimBlockPartitioner<3> dim_block_partitioner;
@@ -416,17 +416,17 @@ int main( int argc, char* argv[] )
        for (int i = i_min; i < i_max; i++) {
            for (int j = j_min; j < j_max; j++) {
                for (int k = k_min; k < k_max; k++) {
-                   double px = i * hp;
-                   double py = j * hp;
-                   double pz = k * hp;
+                   double px_cell = i * hp;
+                   double py_cell = j * hp;
+                   double pz_cell = k * hp;
        
-                   double dx_c = px - 0.5;
-                   double dy_c = py - 0.5;
-                   double dz_c = pz - 0.5;
+                   double dx_c = px_cell - 0.5;
+                   double dy_c = py_cell - 0.5;
+                   double dz_c = pz_cell - 0.5;
                    double r = std::sqrt(dx_c*dx_c + dy_c*dy_c + dz_c*dz_c);
        
                    if (r <= 0.25) {  // R = 0.25
-                       h_pos.push_back({px, py, pz});
+                       h_pos.push_back({px_cell, py_cell, pz_cell});
                        
                        // Hill's vortex vorticity (volume weighted)
                        h_vort.push_back({
@@ -488,17 +488,17 @@ int main( int argc, char* argv[] )
      
         // std::cout << "Rank before migration:" << rank << "Particles size = " << particles.size() << std::endl;
 
-        Cabana::Grid::particleGridMigrate( *( local_grid ), x, particles, halo_width );
+        // Cabana::Grid::particleGridMigrate( *( local_grid ), x, particles, halo_width );
 
-        // slices after migrate as particles may have been reordered during migration
-        x    = Cabana::slice<0>(particles);
-        vort = Cabana::slice<1>(particles);
-        vel  = Cabana::slice<2>(particles);
-	    advectvort = Cabana::slice<3>(particles);
+        // // slices after migrate as particles may have been reordered during migration
+        // x    = Cabana::slice<0>(particles);
+        // vort = Cabana::slice<1>(particles);
+        // vel  = Cabana::slice<2>(particles);
+	    // advectvort = Cabana::slice<3>(particles);
 
         // number of owned particles after migration
         std::size_t num_owned_p = particles.size();
-        std::cout << "Rank after migration:" << rank << " Owned particles size = " << num_owned_p << std::endl;
+        // std::cout << "Rank after migration:" << rank << " Owned particles size = " << num_owned_p << std::endl;
 
         
 
@@ -517,12 +517,17 @@ int main( int argc, char* argv[] )
         std::vector<int> send_counts(num_nbrs, 0);
         std::vector<int> recv_counts(num_nbrs, 0);
         
+        // std::cout <<"Before computing neighbors for halo exchange!!!" << std::endl;
+
+        double halo_total_start = MPI_Wtime();
+        Kokkos::Timer pack_timer;
         // Computing the neighbors for each particle that require halo exchange
         for(int nbr_idx = 0; nbr_idx < num_nbrs; nbr_idx++){
             const int ox = nbr_offsets[nbr_idx][0];
             const int oy = nbr_offsets[nbr_idx][1];
             const int oz = nbr_offsets[nbr_idx][2];
 
+            
             Kokkos::parallel_for(
             "mark_one_neighbor",
             Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
@@ -591,10 +596,13 @@ int main( int argc, char* argv[] )
             send_counts[nbr_idx] = h_total_send;
         }
         Kokkos::fence();
+        double t_send_pack = pack_timer.seconds();
 
+        // std::cout <<"After send_buf and before MPI send -recv of counts!!!" << std::endl;
         //---------------------------------------------------------------
         // Exchanging the send and recev counts with the neigbor ranks where the particles need to go from the current rank.
         
+        double send_rec_count_start = MPI_Wtime();
         std::vector<MPI_Request> count_reqs(2 * num_nbrs, MPI_REQUEST_NULL); // to track the non-blocking send and receive requests for counts
 
         for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
@@ -605,9 +613,14 @@ int main( int argc, char* argv[] )
 
         MPI_Waitall(2 * num_nbrs, count_reqs.data(), MPI_STATUSES_IGNORE);
 
+        double t_count_exchange = MPI_Wtime() - send_rec_count_start;
+
         // ---------------------------------------------------------------
         // Allocating recv buffer and posting receive data for each rank based on the recv counts
 
+        Kokkos::fence();
+
+        double data_exchange_start = MPI_Wtime();
         std::vector<MPI_Request> data_reqs(2 * num_nbrs, MPI_REQUEST_NULL); //to track the non-blocking send and receive requests for data
         
         for(int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
@@ -622,11 +635,16 @@ int main( int argc, char* argv[] )
 
         MPI_Waitall(2 * num_nbrs, data_reqs.data(), MPI_STATUSES_IGNORE);
 
+        double t_data_exchange = MPI_Wtime() - data_exchange_start;
+        // std::cout <<"After MPI send -recv of data!!!" << std::endl;
+
     // ---------------------------------------------------------------
     // Creating the linked cell list for the  owned + ghost particles after migration and halo exchange.
     // ---------------------------------------------------------------
 
     // Storing the new number of particles after halo exchange.
+
+    Kokkos::Timer ghost_append_timer;
     int num_ghosts_global = 0;
     for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
         num_ghosts_global += recv_counts[nbr_idx];
@@ -676,6 +694,9 @@ int main( int argc, char* argv[] )
         ghost_base += nrecv;
     }
     Kokkos::fence();
+    double t_ghost_append = ghost_append_timer.seconds();
+
+    double t_halo_total = MPI_Wtime() - halo_total_start;
 
     particles = particles_w_ghost; // replace the original AoSoA with the new one that has ghost particles
 
@@ -683,6 +704,8 @@ int main( int argc, char* argv[] )
     vort = Cabana::slice<1>(particles);
     vel = Cabana::slice<2>(particles);
     advectvort = Cabana::slice<3>(particles);
+
+    // printf("Particle AoSoA updated with ghost particles!!\n");
 
     // Defining the linked cell list
     // Defining the new local min and max for the linked cell list based on woed + ghost particles
@@ -697,6 +720,7 @@ int main( int argc, char* argv[] )
     std::array<double, 3> local_grid_min = {xmin - halo_radius, ymin - halo_radius, zmin - halo_radius};
     std::array<double, 3> local_grid_max = {xmax + halo_radius, ymax + halo_radius, zmax + halo_radius};
 
+    Kokkos::Timer time_linked_list;
     using ListType = Cabana::LinkedCellList<MemorySpace,double>;
     auto nlist = std::make_shared<Cabana::LinkedCellList<MemorySpace,double>>(
       x,
@@ -708,34 +732,77 @@ int main( int argc, char* argv[] )
       halo_radius,
       0.25
     );
-
+    double t_nlist = time_linked_list.seconds();
+    
     // Computing local particle interations
+    Kokkos::Timer timer;
     run_neighbors(num_owned_p,x,vort,vel,advectvort,*nlist,hp,corr_radius);
+    Kokkos::fence();
+    double timeInt = timer.seconds();
+
+    // total_time
+    double total_time = t_halo_total + t_nlist + timeInt;
+
+    // Max time across ranks
+    double t_pack_max = 0.0;
+    double t_count_exchange_max = 0.0;
+    double t_data_exchange_max = 0.0;
+    double t_ghost_append_max = 0.0;
+    double t_halo_total_max = 0.0;
+    double t_nlist_max = 0.0;
+    double t_interactions_max = 0.0;
+    double t_total_max = 0.0;
+
+    MPI_Reduce(&t_send_pack, &t_pack_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&t_count_exchange, &t_count_exchange_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&t_data_exchange, &t_data_exchange_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&t_ghost_append, &t_ghost_append_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&t_halo_total, &t_halo_total_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&t_nlist, &t_nlist_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&timeInt, &t_interactions_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+    MPI_Reduce(&total_time, &t_total_max, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+
+
+    if(rank == 0){
+        std::cout << "Max time across ranks for packing send buffer: " << t_pack_max << " seconds\n";
+        std::cout << "Max time across ranks for exchanging counts: " << t_count_exchange_max << " seconds\n";
+        std::cout << "Max time across ranks for exchanging data: " << t_data_exchange_max << " seconds\n";
+        std::cout << "Max time across ranks for appending ghost particles: " << t_ghost_append_max << " seconds\n";
+        std::cout << "Max total halo exchange time across ranks: " << t_halo_total_max << " seconds\n";
+        std::cout << "Max time across ranks for linked list construction: " << t_nlist_max << " seconds\n";
+        std::cout << "Max time across ranks for interactions: " << t_interactions_max << " seconds\n";
+        std::cout << "Max total time (halo exchange + linked list construction + interactions) across ranks: " << t_total_max << " seconds\n";    
+    }
+
+    
 
      double vel_sum_local[3] = {0.0, 0.0, 0.0};
 
-    for (int d = 0; d < 3; d++) {
-        double sum_d = 0.0;
-        Kokkos::parallel_reduce(
-            "velocity_sum_owned",
-            Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
-            KOKKOS_LAMBDA(const int p, double& local_sum) {
-                local_sum += vel(p, d);
-            },
-            sum_d
-        );
-        vel_sum_local[d] = sum_d;
-    }
+    //  if(rank == 0){
+    //     std::cout << "interactions time outside the kernel = " << time_int << " seconds\n";
+    //  }
+    // for (int d = 0; d < 3; d++) {
+    //     double sum_d = 0.0;
+    //     Kokkos::parallel_reduce(
+    //         "velocity_sum_owned",
+    //         Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+    //         KOKKOS_LAMBDA(const int p, double& local_sum) {
+    //             local_sum += vel(p, d);
+    //         },
+    //         sum_d
+    //     );
+    //     vel_sum_local[d] = sum_d;
+    // }
 
-    double vel_sum_global[3];
-    MPI_Allreduce(vel_sum_local, vel_sum_global, 3, MPI_DOUBLE, MPI_SUM, comm);
+    // double vel_sum_global[3];
+    // MPI_Allreduce(vel_sum_local, vel_sum_global, 3, MPI_DOUBLE, MPI_SUM, comm);
 
-    if (rank == 0) {
-        std::cout << "Global velocity sum: ("
-                  << vel_sum_global[0] << ", "
-                  << vel_sum_global[1] << ", "
-                  << vel_sum_global[2] << ")" << std::endl;
-    }
+    // if (rank == 0) {
+    //     std::cout << "Global velocity sum: ("
+    //               << vel_sum_global[0] << ", "
+    //               << vel_sum_global[1] << ", "
+    //               << vel_sum_global[2] << ")" << std::endl;
+    // }
  
 }
     Kokkos::finalize();
