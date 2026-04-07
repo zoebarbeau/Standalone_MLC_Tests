@@ -251,10 +251,11 @@ int main( int argc, char* argv[] )
         MPI_Comm_rank(comm, &rank);
         MPI_Comm_size(comm, &nranks);
 
+        
 	    std::cout << "Kokkos execution space: "
           << ExecutionSpace::name() << std::endl;
 
-        int nx = 128;               // particles per dimension
+        int nx = 256;               // particles per dimension
         int N  = nx*nx*nx;
 	    int np = 4;
         double h = 1.0 / nx;
@@ -336,49 +337,110 @@ int main( int argc, char* argv[] )
 
         int bid = global_grid->blockId();
 
-        std::cout << "Rank " << rank
-                << " blockId = " << bid
-                << " coords = (" << px << "," << py << "," << pz << ")"
-                << " process grid = "
-                << Px << " x " << Py << " x " << Pz
-                << std::endl; 
+        std::vector<int> blockid_of_mpirank(nranks);
+        MPI_Allgather(&bid, 1, MPI_INT,blockid_of_mpirank.data(), 1, MPI_INT,comm);
+
+        std::vector<int> blockid_to_mpirank(nranks, -1);
+        for (int r = 0; r < nranks; ++r) {
+            blockid_to_mpirank[blockid_of_mpirank[r]] = r;
+        }
+
+        
+        // std::cout << "Rank " << rank
+        //         << " blockId = " << bid
+        //         << " coords = (" << px << "," << py << "," << pz << ")"
+        //         << " process grid = "
+        //         << Px << " x " << Py << " x " << Pz
+        //         << std::endl; 
 
         // Define a vector to store the neighbor offsets for the 26 neighbors {-1, 0, 1}
-        std::vector<std::array<int, 3>> nbr_offsets;
+        // std::vector<std::array<int, 3>> nbr_offsets;
         // Define a vector to store neighbor ranks
-        std::vector<int> nbr_ranks;
+        // std::vector<int> nbr_ranks;
 
-        //Using blockRank to get neighboring ranks in each direction (with periodicity)
-        // Loop over the 3D stencil of neighbors around the current rank's block coordinates (px, py, pz)
-        // The stencil includes all combinations of offsets in the x, y, and z directions: -1, 0, and 1
-        // THere are 6 faces, 12 edges and 8 corners for a total of 26 neighbors around the current block
-        for(int oz=-1; oz<=1; oz++){
-            for(int oy=-1; oy<=1; oy++){
-                for(int ox=-1; ox<=1; ox++){
-                    if(ox==0 && oy==0 && oz==0)
+        // //Using blockRank to get neighboring ranks in each direction (with periodicity)
+        // // Loop over the 3D stencil of neighbors around the current rank's block coordinates (px, py, pz)
+        // // The stencil includes all combinations of offsets in the x, y, and z directions: -1, 0, and 1
+        // // THere are 6 faces, 12 edges and 8 corners for a total of 26 neighbors around the current block
+        // for(int oz=-1; oz<=1; oz++){
+        //     for(int oy=-1; oy<=1; oy++){
+        //         for(int ox=-1; ox<=1; ox++){
+        //             if(ox==0 && oy==0 && oz==0)
+        //                 continue;
+
+        //             int nbr = global_grid->blockRank(px+ox, py+oy, pz+oz);
+
+        //             if ( nbr >= 0 && nbr != rank ){
+        //                 nbr_offsets.push_back( {ox, oy, oz} );
+        //                 nbr_ranks.push_back( nbr );
+        //             }
+        //         }
+        //     }
+        // }
+
+        // const std::size_t num_nbrs_ranks = nbr_ranks.size();
+        // std::cout << "Rank " << rank
+        //         << " has " << num_nbrs_ranks << " neighbors: ";
+        // for (std::size_t i = 0; i < num_nbrs_ranks; ++i) {
+        //     std::cout << nbr_ranks[i] << " ";
+        // }
+        // std::cout << std::endl;
+
+        // --------------------------------------------------
+        // Build unique remote neighbor ranks and map each rank
+        // to all directional offsets that point to it.
+        // Exclude self.
+        // --------------------------------------------------
+        std::map<int, std::vector<std::array<int,3>>> rank_to_offsets;
+
+        for (int oz = -1; oz <= 1; ++oz) {
+            for (int oy = -1; oy <= 1; ++oy) {
+                for (int ox = -1; ox <= 1; ++ox) {
+                    if (ox == 0 && oy == 0 && oz == 0)
                         continue;
 
-                    int nbr = global_grid->blockRank(px+ox, py+oy, pz+oz);
+                    // int nbr = global_grid->blockRank(px + ox, py + oy, pz + oz);
 
-                    if ( nbr >= 0 ){
-                        nbr_offsets.push_back( {ox, oy, oz} );
-                        nbr_ranks.push_back( nbr );
+
+                    // if (nbr >= 0 && nbr != rank) {
+                    //     rank_to_offsets[nbr].push_back({ox, oy, oz});
+                    // }
+                    int nbr_block = global_grid->blockRank(px + ox, py + oy, pz + oz);
+
+                    if (nbr_block >= 0 && nbr_block != bid) {
+                        int nbr_mpi = blockid_to_mpirank[nbr_block];
+                        rank_to_offsets[nbr_mpi].push_back({ox, oy, oz});
                     }
                 }
             }
         }
 
-        const std::size_t num_nbrs_ranks = nbr_ranks.size();
-        std::cout << "Rank " << rank
-                << " has " << num_nbrs_ranks << " neighbors: ";
-        for (std::size_t i = 0; i < num_nbrs_ranks; ++i) {
-            std::cout << nbr_ranks[i] << " ";
+    std::vector<int> unique_nbr_ranks;
+    unique_nbr_ranks.reserve(rank_to_offsets.size());
+    for (const auto& kv : rank_to_offsets) {
+        unique_nbr_ranks.push_back(kv.first);
+    }
+
+    const int num_unique_nbrs = static_cast<int>(unique_nbr_ranks.size());
+
+    std::cout << "Rank " << rank << " unique remote neighbors (" << num_unique_nbrs << "): ";
+    for (int r : unique_nbr_ranks) std::cout << r << " ";
+    std::cout << std::endl;
+
+    // --------------------------------------------------
+    // Optional debug: show which offsets map to each rank
+    // --------------------------------------------------
+    for (const auto& kv : rank_to_offsets) {
+        std::cout << "Rank " << rank << " -> remote rank " << kv.first << " offsets: ";
+        for (const auto& off : kv.second) {
+            std::cout << "(" << off[0] << "," << off[1] << "," << off[2] << ") ";
         }
         std::cout << std::endl;
+    }
         
         // Creating a deep copy of the neighbor offsets and nbr ranks to the device as they will be used in the lambda for computing the neighbors for halo exchange
-        Kokkos::View<int*[3], MemorySpace> device_nbr_offsets("device_nbr_offsets", nbr_offsets.size());
-        Kokkos::View<int*, MemorySpace> device_nbr_ranks("device_nbr_ranks", nbr_ranks.size());
+        // Kokkos::View<int*[3], MemorySpace> device_nbr_offsets("device_nbr_offsets", nbr_offsets.size());
+        // Kokkos::View<int*, MemorySpace> device_nbr_ranks("device_nbr_ranks", nbr_ranks.size());
 
         // if(rank == 1){
         //     for(int i = 0; i < nbr_offsets.size(); ++i){
@@ -441,12 +503,12 @@ int main( int argc, char* argv[] )
            }
        }
        
-       int numP = h_pos.size();
+       long long numP = static_cast<long long>(h_pos.size());
        std::cout << "Rank " << rank << " owned particles: " << numP << std::endl;
        
        // Sum across all ranks to check total
-       int total_particles = 0;
-       MPI_Allreduce(&numP, &total_particles, 1, MPI_INT, MPI_SUM, comm);
+       long long total_particles = 0;
+       MPI_Allreduce(&numP, &total_particles, 1, MPI_LONG_LONG, MPI_SUM, comm);
        if (rank == 0) {
            std::cout << "Total particles across all ranks: " << total_particles << std::endl; 
               // Only generate particles within this rank's owned subdomain
@@ -456,6 +518,14 @@ int main( int argc, char* argv[] )
            std::cout << "Total particles per rank (before halo): " << numP << std::endl;
        }
        
+       std::cout << "Rank " << rank
+          << " blockId " << bid
+          << " coords (" << px << "," << py << "," << pz << ") "
+          << " x:[" << xmin << "," << xmax << ") "
+          << " y:[" << ymin << "," << ymax << ") "
+          << " z:[" << zmin << "," << zmax << ") "
+          << " numP=" << numP << "\n" << std::endl;
+
        // Create AoSoA with only owned particles
        AoSoA_t particles("particles", numP);
        HostAoSoA_t particles_h("particles_h", numP);
@@ -503,98 +573,204 @@ int main( int argc, char* argv[] )
         
 
         // For particles that are in the halo region and require halo exchange, we need to identify which neighboring ranks they need to be sent to based on their position and the neighbor offsets.
-        const int num_nbrs = static_cast<int>(nbr_offsets.size());
+        // const int num_nbrs = static_cast<int>(nbr_offsets.size());
         // Creatig a kokkos view for storing the MPI rank/neighbor's offstes for a particle.
         // Does a particle i need to be sent to MPI neighbor nbr_idx? 
         Kokkos::View<int*, MemorySpace> send_flag_nbrs("send_flag_nbrs", num_owned_p);
         Kokkos::View<int*, MemorySpace> offset_scan("offset_scan", num_owned_p);
         Kokkos::View<int, MemorySpace> total_send("total_send");
         // Allocate send and receive buffer based on the total number of particles that need to be sent to this neighbor
-        std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> send_buffer(num_nbrs);
-        std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> recv_buffer(num_nbrs);
+        // std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> send_buffer(num_nbrs);
+        // std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> recv_buffer(num_nbrs);
         
-        // Send and receive counts for each MPI rank
-        std::vector<int> send_counts(num_nbrs, 0);
-        std::vector<int> recv_counts(num_nbrs, 0);
+        // // Send and receive counts for each MPI rank
+        // std::vector<int> send_counts(num_nbrs, 0);
+        // std::vector<int> recv_counts(num_nbrs, 0);
+        std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> send_buffer(num_unique_nbrs);
+        std::vector<Kokkos::View<ParticleMPI*, MemorySpace>> recv_buffer(num_unique_nbrs);
+
+        std::vector<int> send_counts(num_unique_nbrs, 0);
+        std::vector<int> recv_counts(num_unique_nbrs, 0);
         
         // std::cout <<"Before computing neighbors for halo exchange!!!" << std::endl;
 
         double halo_total_start = MPI_Wtime();
         Kokkos::Timer pack_timer;
-        // Computing the neighbors for each particle that require halo exchange
-        for(int nbr_idx = 0; nbr_idx < num_nbrs; nbr_idx++){
-            const int ox = nbr_offsets[nbr_idx][0];
-            const int oy = nbr_offsets[nbr_idx][1];
-            const int oz = nbr_offsets[nbr_idx][2];
+        // // Computing the neighbors for each particle that require halo exchange
+        // for(int nbr_idx = 0; nbr_idx < num_nbrs; nbr_idx++){
+        //     const int ox = nbr_offsets[nbr_idx][0];
+        //     const int oy = nbr_offsets[nbr_idx][1];
+        //     const int oz = nbr_offsets[nbr_idx][2];
 
             
+        //     Kokkos::parallel_for(
+        //     "mark_one_neighbor",
+        //     Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+        //     KOKKOS_LAMBDA(const int i)
+        //     {
+        //         double xp = x(i,0);
+        //         double yp = x(i,1);
+        //         double zp = x(i,2);
+
+        //         bool xok = (ox == 0) ||
+        //                    (ox < 0 && xp <  xmin + halo_radius) ||
+        //                    (ox > 0 && xp >= xmax - halo_radius);
+
+        //         bool yok = (oy == 0) ||
+        //                    (oy < 0 && yp <  ymin + halo_radius) ||
+        //                    (oy > 0 && yp >= ymax - halo_radius);
+
+        //         bool zok = (oz == 0) ||
+        //                    (oz < 0 && zp <  zmin + halo_radius) ||
+        //                    (oz > 0 && zp >= zmax - halo_radius);
+
+        //         send_flag_nbrs(i) = (xok && yok && zok) ? 1 : 0;
+        //     });
+        
+        //     // Conduct a parallel scan of the flags for this neighbor. This will inform how many particles and which ones need to be sent to the send buffer in what position for this rank.
+        //     Kokkos::parallel_scan(
+        //         "scan_one_neighbor",
+        //         Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+        //         KOKKOS_LAMBDA(const int i, int& update, const bool final_pass)
+        //     {
+        //         int val = send_flag_nbrs(i);
+        //         if (final_pass){
+        //             offset_scan(i) = update;
+        //         }
+        //         update += val;
+
+        //         if (final_pass && i == (int)num_owned_p - 1)
+        //             total_send() = update;
+        //     });
+
+        //     int h_total_send = 0;
+        //     Kokkos::deep_copy(h_total_send, total_send);
+
+        //     // Allocate send buffer based on the total number of particles that need to be sent to this neighbor
+        //     send_buffer[nbr_idx] = Kokkos::View<ParticleMPI*, MemorySpace>("send_buf", h_total_send);
+        //     auto send_buf = send_buffer[nbr_idx];
+
+        //     // Adding data to send buffer for one MPI rank
+        //     Kokkos::parallel_for(
+        //         "fill_send_buffer_one_neighbor",
+        //         Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+        //         KOKKOS_LAMBDA(const int i)
+        //         {
+        //             if (send_flag_nbrs(i) == 1){
+        //                 int os = offset_scan(i);
+        //                 for(int d = 0; d < 3; d++){
+        //                     send_buf(os).x_send[d] = x(i,d);
+        //                     send_buf(os).vort_send[d] = vort(i,d);
+        //                     send_buf(os).vel_send[d] = vel(i,d);
+        //                     send_buf(os).advectvort_send[d] = advectvort(i,d);
+        //                 }
+        //             }
+        //         }
+        //     );
+        //     // Storing total send in send_count on the host for this neighbor
+        //     send_counts[nbr_idx] = h_total_send;
+        // }
+
+        // --------------------------------------------------
+        // Pack one send buffer per unique remote rank
+        // A particle is sent to that rank if it satisfies ANY
+        // of the face/edge/corner directional tests mapped to it.
+        // --------------------------------------------------
+
+        for (int nbr_idx = 0; nbr_idx < num_unique_nbrs; ++nbr_idx) {
+            const int nbr = unique_nbr_ranks[nbr_idx];
+            const auto& offs_host = rank_to_offsets[nbr];
+            const int num_offs = static_cast<int>(offs_host.size());
+
+            // Copy this rank's offset list to device for the kernel.
+            Kokkos::View<int*[3], MemorySpace> offs_dev("offs_dev", num_offs);
+            auto offs_host_mirror = Kokkos::create_mirror_view(offs_dev);
+            for (int t = 0; t < num_offs; ++t) {
+                offs_host_mirror(t,0) = offs_host[t][0];
+                offs_host_mirror(t,1) = offs_host[t][1];
+                offs_host_mirror(t,2) = offs_host[t][2];
+            }
+            Kokkos::deep_copy(offs_dev, offs_host_mirror);
+
             Kokkos::parallel_for(
-            "mark_one_neighbor",
+            "mark_one_unique_neighbor",
             Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
             KOKKOS_LAMBDA(const int i)
             {
-                double xp = x(i,0);
-                double yp = x(i,1);
-                double zp = x(i,2);
+                const double xp = x(i,0);
+                const double yp = x(i,1);
+                const double zp = x(i,2);
 
-                bool xok = (ox == 0) ||
-                           (ox < 0 && xp <  xmin + halo_radius) ||
-                           (ox > 0 && xp >= xmax - halo_radius);
+                int send_me = 0;
 
-                bool yok = (oy == 0) ||
-                           (oy < 0 && yp <  ymin + halo_radius) ||
-                           (oy > 0 && yp >= ymax - halo_radius);
+                for (int t = 0; t < num_offs; ++t) {
+                    const int ox = offs_dev(t,0);
+                    const int oy = offs_dev(t,1);
+                    const int oz = offs_dev(t,2);
 
-                bool zok = (oz == 0) ||
-                           (oz < 0 && zp <  zmin + halo_radius) ||
-                           (oz > 0 && zp >= zmax - halo_radius);
+                    const bool xok = (ox == 0) ||
+                                 (ox < 0 && xp <  xmin + halo_radius) ||
+                                 (ox > 0 && xp >= xmax - halo_radius);
 
-                send_flag_nbrs(i) = (xok && yok && zok) ? 1 : 0;
-            });
-        
-            // Conduct a parallel scan of the flags for this neighbor. This will inform how many particles and which ones need to be sent to the send buffer in what position for this rank.
-            Kokkos::parallel_scan(
-                "scan_one_neighbor",
-                Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
-                KOKKOS_LAMBDA(const int i, int& update, const bool final_pass)
-            {
-                int val = send_flag_nbrs(i);
-                if (final_pass){
-                    offset_scan(i) = update;
-                }
-                update += val;
+                    const bool yok = (oy == 0) ||
+                                 (oy < 0 && yp <  ymin + halo_radius) ||
+                                 (oy > 0 && yp >= ymax - halo_radius);
 
-                if (final_pass && i == (int)num_owned_p - 1)
-                    total_send() = update;
-            });
+                    const bool zok = (oz == 0) ||
+                                 (oz < 0 && zp <  zmin + halo_radius) ||
+                                 (oz > 0 && zp >= zmax - halo_radius);
 
-            int h_total_send = 0;
-            Kokkos::deep_copy(h_total_send, total_send);
-
-            // Allocate send buffer based on the total number of particles that need to be sent to this neighbor
-            send_buffer[nbr_idx] = Kokkos::View<ParticleMPI*, MemorySpace>("send_buf", h_total_send);
-            auto send_buf = send_buffer[nbr_idx];
-
-            // Adding data to send buffer for one MPI rank
-            Kokkos::parallel_for(
-                "fill_send_buffer_one_neighbor",
-                Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
-                KOKKOS_LAMBDA(const int i)
-                {
-                    if (send_flag_nbrs(i) == 1){
-                        int os = offset_scan(i);
-                        for(int d = 0; d < 3; d++){
-                            send_buf(os).x_send[d] = x(i,d);
-                            send_buf(os).vort_send[d] = vort(i,d);
-                            send_buf(os).vel_send[d] = vel(i,d);
-                            send_buf(os).advectvort_send[d] = advectvort(i,d);
-                        }
+                    if (xok && yok && zok) {
+                        send_me = 1;
+                        break; // only need to send once to this remote rank
                     }
+                
                 }
-            );
-            // Storing total send in send_count on the host for this neighbor
-            send_counts[nbr_idx] = h_total_send;
+
+                send_flag_nbrs(i) = send_me;
+            }
+        );
+
+        Kokkos::parallel_scan(
+        "scan_one_unique_neighbor",
+        Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+        KOKKOS_LAMBDA(const int i, int& update, const bool final_pass)
+        {
+            const int val = send_flag_nbrs(i);
+            if (final_pass) offset_scan(i) = update;
+            update += val;
+
+            if (final_pass && i == (int)num_owned_p - 1)
+                total_send() = update;
+            }
+        );
+
+        int h_total_send = 0;
+        Kokkos::deep_copy(h_total_send, total_send);
+
+        send_buffer[nbr_idx] = Kokkos::View<ParticleMPI*, MemorySpace>("send_buf", h_total_send);
+        auto send_buf = send_buffer[nbr_idx];
+
+        Kokkos::parallel_for(
+        "fill_send_buffer_one_unique_neighbor",
+        Kokkos::RangePolicy<ExecutionSpace>(0, num_owned_p),
+        KOKKOS_LAMBDA(const int i)
+        {
+            if (send_flag_nbrs(i) == 1) {
+                const int os = offset_scan(i);
+                for (int d = 0; d < 3; ++d) {
+                    send_buf(os).x_send[d]          = x(i,d);
+                    send_buf(os).vort_send[d]       = vort(i,d);
+                    send_buf(os).vel_send[d]        = vel(i,d);
+                    send_buf(os).advectvort_send[d] = advectvort(i,d);
+                }
+            }
         }
+    );
+
+    send_counts[nbr_idx] = h_total_send;
+}
+
         Kokkos::fence();
         double t_send_pack = pack_timer.seconds();
 
@@ -602,16 +778,44 @@ int main( int argc, char* argv[] )
         //---------------------------------------------------------------
         // Exchanging the send and recev counts with the neigbor ranks where the particles need to go from the current rank.
         
+        // to generate unique tags for MPI send and recv
+        // auto dir_tag = [](int ox_t, int oy_t, int oz_t) {
+        //     return (ox_t + 1) + 3 * (oy_t + 1) + 9 * (oz_t + 1);
+        // };
+
         double send_rec_count_start = MPI_Wtime();
-        std::vector<MPI_Request> count_reqs(2 * num_nbrs, MPI_REQUEST_NULL); // to track the non-blocking send and receive requests for counts
+        // std::vector<MPI_Request> count_reqs(2 * num_nbrs, MPI_REQUEST_NULL); // to track the non-blocking send and receive requests for counts
 
-        for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
-            MPI_Irecv(&recv_counts[nbr_idx], 1, MPI_INT, nbr_ranks[nbr_idx], 100, comm, &count_reqs[2*nbr_idx]);
+        // for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
 
-            MPI_Isend(&send_counts[nbr_idx], 1, MPI_INT, nbr_ranks[nbr_idx], 100, comm, &count_reqs[2*nbr_idx + 1]);
+        //     // int ox_count_tag = nbr_offsets[nbr_idx][0];
+        //     // int oy_count_tag = nbr_offsets[nbr_idx][1];
+        //     // int oz_count_tag = nbr_offsets[nbr_idx][2];
+
+        //     // int recv_tag = 1000 + dir_tag(ox_count_tag, oy_count_tag, oz_count_tag); // unique tag for this neighbor based on its offset
+        //     // int send_tag = 1000 + dir_tag(-ox_count_tag, -oy_count_tag, -oz_count_tag); 
+
+        //     MPI_Irecv(&recv_counts[nbr_idx], 1, MPI_INT, nbr_ranks[nbr_idx], 100, comm, &count_reqs[2*nbr_idx]);
+
+        //     MPI_Isend(&send_counts[nbr_idx], 1, MPI_INT, nbr_ranks[nbr_idx], 100, comm, &count_reqs[2*nbr_idx + 1]);
+        // }
+
+        // MPI_Waitall(2 * num_nbrs, count_reqs.data(), MPI_STATUSES_IGNORE);
+        std::vector<MPI_Request> count_reqs(2 * num_unique_nbrs, MPI_REQUEST_NULL);
+
+        for (int nbr_idx = 0; nbr_idx < num_unique_nbrs; ++nbr_idx) {
+            const int nbr = unique_nbr_ranks[nbr_idx];
+
+            MPI_Irecv(&recv_counts[nbr_idx], 1, MPI_INT, nbr, 100, comm,&count_reqs[2*nbr_idx]);
+
+            MPI_Isend(&send_counts[nbr_idx], 1, MPI_INT, nbr, 100, comm,&count_reqs[2*nbr_idx + 1]);
         }
 
-        MPI_Waitall(2 * num_nbrs, count_reqs.data(), MPI_STATUSES_IGNORE);
+        MPI_Waitall(2 * num_unique_nbrs, count_reqs.data(), MPI_STATUSES_IGNORE);
+
+        // std::cout << "Rank " << rank << " completed MPI send-recv of count for halo exchange with "
+        //   << num_unique_nbrs << " unique neighbors" << std::endl;
+
 
         double t_count_exchange = MPI_Wtime() - send_rec_count_start;
 
@@ -621,19 +825,39 @@ int main( int argc, char* argv[] )
         Kokkos::fence();
 
         double data_exchange_start = MPI_Wtime();
-        std::vector<MPI_Request> data_reqs(2 * num_nbrs, MPI_REQUEST_NULL); //to track the non-blocking send and receive requests for data
-        
-        for(int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+        // std::vector<MPI_Request> data_reqs(2 * num_nbrs, MPI_REQUEST_NULL); //to track the non-blocking send and receive requests for data
+        std::vector<MPI_Request> data_reqs(2 * num_unique_nbrs, MPI_REQUEST_NULL);
+        // for(int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+            
+        //     recv_buffer[nbr_idx] = Kokkos::View<ParticleMPI*, MemorySpace>("recv_buf", recv_counts[nbr_idx]);
+
+        //     // int ox_data_tag = nbr_offsets[nbr_idx][0];
+        //     // int oy_data_tag = nbr_offsets[nbr_idx][1];
+        //     // int oz_data_tag = nbr_offsets[nbr_idx][2];
+
+        //     // int recv_data_tag = 2000 + dir_tag(ox_data_tag, oy_data_tag, oz_data_tag);
+        //     // int send_data_tag = 2000 + dir_tag(-ox_data_tag, -oy_data_tag, -oz_data_tag); // unique tag for this neighbor based on its offset
+
+        //     //MPI_Irecv
+        //     MPI_Irecv(recv_buffer[nbr_idx].data(), recv_counts[nbr_idx] * sizeof(ParticleMPI), MPI_BYTE, nbr_ranks[nbr_idx], 200, comm, &data_reqs[2*nbr_idx]);
+
+        //     // MPI_Isend
+        //     MPI_Isend(send_buffer[nbr_idx].data(), send_counts[nbr_idx] * sizeof(ParticleMPI), MPI_BYTE, nbr_ranks[nbr_idx], 200, comm, &data_reqs[2*nbr_idx + 1]);
+        // }  
+
+        for (int nbr_idx = 0; nbr_idx < num_unique_nbrs; ++nbr_idx) {
+            const int nbr = unique_nbr_ranks[nbr_idx];
+
             recv_buffer[nbr_idx] = Kokkos::View<ParticleMPI*, MemorySpace>("recv_buf", recv_counts[nbr_idx]);
 
-            //MPI_Irecv
-            MPI_Irecv(recv_buffer[nbr_idx].data(), recv_counts[nbr_idx] * sizeof(ParticleMPI), MPI_BYTE, nbr_ranks[nbr_idx], 200, comm, &data_reqs[2*nbr_idx]);
+            MPI_Irecv(recv_buffer[nbr_idx].data(),recv_counts[nbr_idx] * sizeof(ParticleMPI),MPI_BYTE, nbr, 200, comm,&data_reqs[2*nbr_idx]);
 
-            // MPI_Isend
-            MPI_Isend(send_buffer[nbr_idx].data(), send_counts[nbr_idx] * sizeof(ParticleMPI), MPI_BYTE, nbr_ranks[nbr_idx], 200, comm, &data_reqs[2*nbr_idx + 1]);
-        }  
-
-        MPI_Waitall(2 * num_nbrs, data_reqs.data(), MPI_STATUSES_IGNORE);
+            MPI_Isend(send_buffer[nbr_idx].data(),send_counts[nbr_idx] * sizeof(ParticleMPI),MPI_BYTE, nbr, 200, comm,&data_reqs[2*nbr_idx + 1]);
+        }
+        // MPI_Waitall(2 * num_nbrs, data_reqs.data(), MPI_STATUSES_IGNORE);
+        MPI_Waitall(2 * num_unique_nbrs, data_reqs.data(), MPI_STATUSES_IGNORE);
+        // std::cout << "Rank " << rank << " completed MPI send-recv of data for halo exchange with "
+        //   << num_unique_nbrs << " unique neighbors" << std::endl;
 
         double t_data_exchange = MPI_Wtime() - data_exchange_start;
         // std::cout <<"After MPI send -recv of data!!!" << std::endl;
@@ -646,7 +870,10 @@ int main( int argc, char* argv[] )
 
     Kokkos::Timer ghost_append_timer;
     int num_ghosts_global = 0;
-    for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+    // for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+    //     num_ghosts_global += recv_counts[nbr_idx];
+    // }
+    for (int nbr_idx = 0; nbr_idx < num_unique_nbrs; ++nbr_idx) {
         num_ghosts_global += recv_counts[nbr_idx];
     }
     std::size_t total_particles_after_halo = num_owned_p + num_ghosts_global;
@@ -672,27 +899,51 @@ int main( int argc, char* argv[] )
         });
     // Filling the ghost particle data in the new AoSoA based on the data received from the neighbors
     std::size_t ghost_base = num_owned_p; // base index for ghost particles in the new AoSoA
-    for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+    // for (int nbr_idx = 0; nbr_idx < num_nbrs; ++nbr_idx){
+    //     auto recv_buf = recv_buffer[nbr_idx];
+    //     const int nrecv = recv_counts[nbr_idx];
+    //     const std::size_t base = ghost_base;
+
+    //     Kokkos::parallel_for(
+    //         "append_ghost_particles",
+    //         Kokkos::RangePolicy<ExecutionSpace>(0, nrecv),
+    //         KOKKOS_LAMBDA(const int j){
+    //             const std::size_t p = base + j;
+
+    //             for (int d = 0; d < 3; ++d){
+    //                 x_wg(p,d)    = recv_buf(j).x_send[d];
+    //                 vort_wg(p,d) = recv_buf(j).vort_send[d];
+    //                 vel_wg(p,d)  = recv_buf(j).vel_send[d];
+    //                 advectvort_wg(p,d)  = recv_buf(j).advectvort_send[d];
+    //             }
+    //         }
+    //     );
+    //     ghost_base += nrecv;
+    // }
+    for (int nbr_idx = 0; nbr_idx < num_unique_nbrs; ++nbr_idx) {
         auto recv_buf = recv_buffer[nbr_idx];
         const int nrecv = recv_counts[nbr_idx];
         const std::size_t base = ghost_base;
 
         Kokkos::parallel_for(
-            "append_ghost_particles",
-            Kokkos::RangePolicy<ExecutionSpace>(0, nrecv),
-            KOKKOS_LAMBDA(const int j){
+        "append_ghost_particles",
+        Kokkos::RangePolicy<ExecutionSpace>(0, nrecv),
+        KOKKOS_LAMBDA(const int j)
+        {
                 const std::size_t p = base + j;
-
-                for (int d = 0; d < 3; ++d){
-                    x_wg(p,d)    = recv_buf(j).x_send[d];
-                    vort_wg(p,d) = recv_buf(j).vort_send[d];
-                    vel_wg(p,d)  = recv_buf(j).vel_send[d];
-                    advectvort_wg(p,d)  = recv_buf(j).advectvort_send[d];
+                for (int d = 0; d < 3; ++d) {
+                    x_wg(p,d)          = recv_buf(j).x_send[d];
+                    vort_wg(p,d)       = recv_buf(j).vort_send[d];
+                    vel_wg(p,d)        = recv_buf(j).vel_send[d];
+                    advectvort_wg(p,d) = recv_buf(j).advectvort_send[d];
                 }
+            
             }
         );
+
         ghost_base += nrecv;
     }
+
     Kokkos::fence();
     double t_ghost_append = ghost_append_timer.seconds();
 
@@ -776,7 +1027,7 @@ int main( int argc, char* argv[] )
 
     
 
-     double vel_sum_local[3] = {0.0, 0.0, 0.0};
+    //  double vel_sum_local[3] = {0.0, 0.0, 0.0};
 
     //  if(rank == 0){
     //     std::cout << "interactions time outside the kernel = " << time_int << " seconds\n";
